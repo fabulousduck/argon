@@ -6,11 +6,7 @@ import (
 	// "argon/src/scanner"
 )
 
-// fmt.Println("//");
-// fmt.Println(indexing);
-// fmt.Println(lexedToken.tokenType);
-// fmt.Println(lex(GET("../testFiles/main.ar", currentColl+1, currentLine, sourceIndex+1)).tokenType);
-// fmt.Println("//");
+
 
 func main() {
 	currentLine  := 0
@@ -19,8 +15,9 @@ func main() {
 	indexing     := false
 	indexerStart := 0
 	tracker      := 0
-	positions    := [][]int{}
+	cookieJar    := []string{}
 	file, err    := ioutil.ReadFile("../testfiles/main.ar")
+	lexedToken   := &token{"0",0,0,0,"0"}
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -33,41 +30,35 @@ func main() {
     /*
       do fany lexer stuff here
     */
-    lexedToken := lex(char);
-		if(!indexing && lexedToken.tokenType == "STRING"){
+    lexedToken = lex(char);
 
-			indexerStart = lexedToken.sourceIndex;
+		if lexedToken.tokenType == "STRING" {
+			if(!indexing){
+				indexerStart = lexedToken.sourceIndex;
+			}
+
 			indexing = true;
-			fmt.Println("started indexing at : " , indexerStart , " origin : " , sourceIndex);
-
-			if(lex(GET("../testFiles/main.ar",currentColl+1, currentLine, sourceIndex+1)).tokenType != "STRING"){ // <--- it wont enter this state. fix this.
-				fmt.Println("memes");
-				indexing = false;
-				fmt.Println("tracker ended at : " , tracker, " end origin : " , sourceIndex);
-				positions = append(positions, []int{indexerStart,tracker,currentLine, sourceIndex,currentColl});
-				fmt.Println(concat(putStack(positions[len(positions)-1])));
-
-				};
-		}else if(indexing && lexedToken.tokenType == "STRING"){
-
 			tracker++;
-			fmt.Println("membes2")
+			fmt.Println("oh ! a cookie at : " , lexedToken.sourceIndex);
+			fmt.Println(lexedToken.cargo);
 
-			if(lex(GET("../testFiles/main.ar",currentColl+1, currentLine, sourceIndex+1)).tokenType != "STRING"){ // <--- it wont enter this state. fix this.
-				fmt.Println("memes2");
-				indexing = false;
-				fmt.Println("tracker 2 ended at : " , tracker);
-				positions = append(positions, []int{indexerStart,tracker,currentLine, sourceIndex,currentColl});
-				fmt.Println(concat(putStack(positions[len(positions)-1])));
+		}else if(indexing && lexedToken.tokenType != "STRING"){
 
-				};
-			}
-			if char.cargo == "NEWLINE" {
-				currentLine += 1
-				currentColl = 0
-			}
-			sourceIndex += 1
-			currentColl += 1
+			fmt.Println("oh. no more cookies. cookie trail lasted  : ", indexerStart , "/" , indexerStart + tracker);
+			cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
+
+			tracker = 0;
+			indexerStart = 0;
+			indexing = false;
+			fmt.Println(cookieJar);
+		}
+
+		if char.cargo == "NEWLINE" {
+			currentLine += 1
+			currentColl = 0
+		}
+		sourceIndex += 1
+		currentColl += 1
 
 		}
     /*
@@ -76,13 +67,16 @@ func main() {
 
 	}
 
+//this function is for the parser to request tokens from the lexer.
+// func eat(tokenList []string, TkIndex int) *token{
+//
+// }
 
 func lex(char *char) *token {
 
 	//if the char is a letter
   if(isIn(char.cargo, IDENTIFIER_STARTCHARS())){
-		// fmt.Println("found : ", char);
-    // buffer = append(buffer, char.cargo);
+
     return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"STRING"}
   }else{
 		// fmt.Println(buffer);
@@ -103,19 +97,20 @@ func isIn(character string, section []string) bool{
 }
 
 
-func putStack(r []int) []string{
-	stack := []string{}
-	j := 0;
+func StackCookies(r []int) []string{
+	cookieStack := []string{}
 
-	for i :=r[0]; i < r[0]+r[1]; i++ {
-		ch := GET("../testFiles/main.ar",r[0+j], r[2], r[3]);
-		stack = append(stack, ch.cargo);
-		j++
+	for i := 0; i < r[1]; i++ {
+		//cookies in the cookieJar are listed as follows : indexerStart /
+		//																								 tracker			/
+		//																					indexerStart + tracker -1 /
+		//																								line 					/
+		cookieStack = append(cookieStack, GET("../testfiles/main.ar", r[0]+i, r[3], r[0]+i).cargo);
 	}
-	return stack;
+	return cookieStack;
 }
 
-func concat(r []string) string {
+func concatCookie(r []string) string {
 	f := "";
 	for i := 0; i < len(r); i++ {
 		f += r[i];
