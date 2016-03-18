@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
+	"fmt"
 	// "argon/src/scanner"
 )
 
@@ -15,56 +15,78 @@ func main() {
 	indexing     := false
 	indexerStart := 0
 	tracker      := 0
+	const_string_mode := false;
 	cookieJar    := []string{}
 	file, err    := ioutil.ReadFile("../testfiles/main.ar")
 	lexedToken   := &token{"0",0,0,0,"0"}
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
-	fmt.Println("char sourceIndex lineIndex collumnIndex")
 	for i := 0; i < len(string(file)); i++ {
+
 		char := GET("../testFiles/main.ar", currentColl, currentLine, sourceIndex);
 
-
-
-    /*
-      do fany lexer stuff here
-    */
     lexedToken = lex(char);
 
-		if lexedToken.tokenType == "STRING" {
+
+		//this handles reading out non-string constants
+
+
+		if lexedToken.tokenType == "STRING" || lexedToken.tokenType == "STRING_CONSTANT"{
+
 			if(!indexing){
+
 				indexerStart = lexedToken.sourceIndex;
+
+			}
+
+			if(lexedToken.tokenType == "STRING_CONSTANT"){
+				const_string_mode = true;
+				fmt.Println("found a \" ")
 			}
 
 			indexing = true;
 			tracker++;
-			fmt.Println("oh ! a cookie at : " , lexedToken.sourceIndex);
-			fmt.Println(lexedToken.cargo);
 
-		}else if(indexing && lexedToken.tokenType != "STRING"){
+		}else if(indexing && const_string_mode){
+			fmt.Println("indexing and const_string_mode are true")
+				if(lexedToken.tokenType == "STRING_CONSTANT"){
 
-			fmt.Println("oh. no more cookies. cookie trail lasted  : ", indexerStart , "/" , indexerStart + tracker);
-			cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
+					fmt.Println("indexing and const_string_mode and tokenType == STRING_CONSTANT")
+					tracker = 0;
+					indexerStart = 0;
+					indexing = false;
+					const_string_mode = false;
+				}
+	}else if(indexing && !const_string_mode){
+		cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
+		fmt.Println("tracker for append = ", tracker);
+		tracker = 0;
+		indexerStart = 0;
+		indexing = false;
+	}
 
-			tracker = 0;
-			indexerStart = 0;
-			indexing = false;
-			fmt.Println(cookieJar);
-		}
+
+
+
+
+
+
 
 		if char.cargo == "NEWLINE" {
 			currentLine += 1
 			currentColl = 0
 		}
+
 		sourceIndex += 1
 		currentColl += 1
 
 		}
-    /*
-    end fancy lexer stuff here
-    */
-
+		//test. remove once we confirm it works
+		for i := 0; i < len(cookieJar); i++ {
+			fmt.Println(cookieJar[i])
+		}
 	}
 
 //this function is for the parser to request tokens from the lexer.
@@ -77,14 +99,24 @@ func lex(char *char) *token {
 	//if the char is a letter
   if(isIn(char.cargo, IDENTIFIER_STARTCHARS())){
 
-    return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"STRING"}
-  }else{
-		// fmt.Println(buffer);
+		return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"STRING"}
+
+	}else if(isIn(char.cargo, NUMBER_CHARS())){
+
+		return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"INTEGER"}
+
+	}else if(isIn(char.cargo, STRING_CHARACTERS())){
+
+			return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"STRING_CONSTANT"}
+
+	}else if(isIn(char.cargo, ONE_CHARACTER_SYMBOLS())){
+
+			return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"SYMBOL"}
+
 	}
-	// else if(isIn(char.cargo, )){
-	//
-	// }
-	return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex, "ERROR"}
+		return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"ERROR"}
+
+
 }
 
 func isIn(character string, section []string) bool{
@@ -101,19 +133,29 @@ func StackCookies(r []int) []string{
 	cookieStack := []string{}
 
 	for i := 0; i < r[1]; i++ {
+
 		//cookies in the cookieJar are listed as follows : indexerStart /
 		//																								 tracker			/
 		//																					indexerStart + tracker -1 /
 		//																								line 					/
 		cookieStack = append(cookieStack, GET("../testfiles/main.ar", r[0]+i, r[3], r[0]+i).cargo);
+				fmt.Println("adding : ", GET("../testfiles/main.ar", r[0]+i, r[3], r[0]+i).cargo, "to stack. stack is now" , cookieStack);
 	}
+	fmt.Println("SC output : " , cookieStack);
 	return cookieStack;
 }
 
+//function to hang a type to concatenated or constant strings;
+// func validate(toValidate string) {
+//
+// }
+
+//function for concatinating cookies
 func concatCookie(r []string) string {
 	f := "";
 	for i := 0; i < len(r); i++ {
 		f += r[i];
 	}
+	// fmt.Println("outputted : ", f );
 	return f;
 }

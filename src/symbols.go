@@ -131,3 +131,11 @@ func STRING_CHARACTERS() []string{
 func WHITESPACE_CHARS() []string{
 	return []string{"\\n","\\t"}
 }
+
+func ONE_CHARACTER_SYMBOLS() []string{
+	return oneCharacterSymbols()
+}
+
+func TWO_CHARACTER_SYMBOLS() []string{
+	return twoCharacterSymbols()
+}
