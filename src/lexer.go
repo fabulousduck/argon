@@ -31,13 +31,13 @@ func main() {
 
 		//this handles reading out non-string constants
 
-
+		// if its a string or litteral string token and its not tracking a litteral string
 		if lexedToken.tokenType == "STRING" || lexedToken.tokenType == "STRING_CONSTANT" && !const_string_mode{
-
+			//if its not tracking
 			if(!indexing){
 				indexerStart = lexedToken.sourceIndex;
 			}
-
+			// if its a litteral string token
 			if(lexedToken.tokenType == "STRING_CONSTANT"){
 				const_string_mode = true;
 				fmt.Println("found a \" ")
@@ -45,9 +45,11 @@ func main() {
 
 			indexing = true;
 			tracker++;
-
+			//if tracking a litteral string
 		}else if(indexing && const_string_mode){
+
 			tracker++
+				//if it finds a litteral string token while already lexing a litteral string
 				if(lexedToken.tokenType == "STRING_CONSTANT"){
 
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
@@ -56,13 +58,17 @@ func main() {
 					indexerStart = 0;
 					indexing = false;
 					const_string_mode = false;
+
 				}
+	//if its tracking but not tracking a litteral string
 	}else if(indexing && !const_string_mode){
+
 		cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
 		fmt.Println("tracker for append = ", tracker);
 		tracker = 0;
 		indexerStart = 0;
 		indexing = false;
+
 	}
 
 
