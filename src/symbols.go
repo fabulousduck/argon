@@ -3,42 +3,41 @@ package main
 /*
 	List of keyword defenitions
 */
-func keyWords() []string{
-	return []string{
-		"if",
-		"then",
-		"else",
-		"while",
-		"elif",
-		"endif",
-		"while",
-		"loop",
-		"endloop",
-		"print",
-		"return",
-		"exit",
-		"define",
+func keyWords() []cookie{
+	return []cookie{
+		{"if",   "TOKEN_IF"},
+		{"then", "TOKEN_THEN"},
+		{"else", "TOKEN_ELSE"},
+		{"while","TOKEN_WHILE"},
+		{"elif", "TOKEN_ELIF"},
+		{"endif","TOKEN_ENDIF"},
+		{"while","TOKEN_WHILE"},
+		{"for",  "TOKEN_FOR"},
+		{"print","TOKEN_PRINT"},
+		{"return","TOKEN_RETURN"},
+		{"exit",  "TOKEN_EXIT"},
+		{"define","TOKEN_DEFINE"},
 	}
 }
 	/*
 		List of one character long symbols
 	*/
-func oneCharacterSymbols() []string{
-	return []string{
-		"=",
-		"(",
-		")",
-		"<",
-		">",
-		"/",
-		"*",
-		"+",
-		"-",
-		"!",
-		"&",
-		".",
-		",",
-		";",
+func oneCharacterSymbols() []cookie{
+	return []cookie{
+		{"=", "TOKEN_EQUALS"},
+		{"(", "TOKEN_LFT_PAR"},
+		{")", "TOKEN_RGT_PAR"},
+		{"<", "TOKEN_LFT"},
+		{">", "TOKEN_RGT"},
+		{"/", "TOKEN_SLASH"},
+		{"*", "TOKEN_STAR"},
+		{"+", "TOKEN_PLUS"},
+		{"-", "TOKEN_MIN"},
+		{"!", "TOKEN_BANG"},
+		{"&", "TOKEN_AND"},
+		{".", "TOKEN_DOT"},
+		{",", "TOKEN_COMMA"},
+		{";", "TOKEN_ENDOFSTATEMENT"},
 	}
 }
 	/*

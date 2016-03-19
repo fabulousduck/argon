@@ -16,12 +16,14 @@ func main() {
 	indexerStart := 0
 	tracker      := 0
 	const_string_mode := false;
-	cookieJar    := []string{}
+	int_count_mode := false;
+	cookieJar    := []cookie{}
 	file, err    := ioutil.ReadFile("../testfiles/main.ar")
 	lexedToken   := &token{"0",0,0,0,"0"}
 	if err != nil {
 		panic(err)
 	}
+
 	for i := 0; i < len(string(file)); i++ {
 
 		char := GET("../testFiles/main.ar", currentColl, currentLine, sourceIndex);
@@ -49,34 +51,29 @@ func main() {
 		}else if(indexing && const_string_mode){
 
 			tracker++
+
 				//if it finds a litteral string token while already lexing a litteral string
 				if(lexedToken.tokenType == "STRING_CONSTANT"){
 
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
-					fmt.Println("indexing and const_string_mode and tokenType == STRING_CONSTANT")
 					tracker = 0;
 					indexerStart = 0;
 					indexing = false;
 					const_string_mode = false;
 
 				}
+
 	//if its tracking but not tracking a litteral string
 	}else if(indexing && !const_string_mode){
 
 		cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
-		fmt.Println("tracker for append = ", tracker);
 		tracker = 0;
 		indexerStart = 0;
 		indexing = false;
 
+	}else if(lexedToken.tokenType == "INTERGER" && ){
+
 	}
-
-
-
-
-
-
-
 
 		if char.cargo == "NEWLINE" {
 			currentLine += 1
@@ -93,10 +90,6 @@ func main() {
 		}
 	}
 
-//this function is for the parser to request tokens from the lexer.
-// func eat(tokenList []string, TkIndex int) *token{
-//
-// }
 
 func lex(char *char) *token {
 
@@ -107,7 +100,7 @@ func lex(char *char) *token {
 
 	}else if(isIn(char.cargo, NUMBER_CHARS())){
 
-		return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"INTEGER"}
+		return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"INTERGER"}
 
 	}else if(isIn(char.cargo, STRING_CHARACTERS())){
 
@@ -123,6 +116,7 @@ func lex(char *char) *token {
 
 }
 
+//function for checking if a char is a given type
 func isIn(character string, section []string) bool{
   for i := 0; i < len(section); i++ {
     if section[i] == character{
@@ -132,34 +126,52 @@ func isIn(character string, section []string) bool{
 	return false
 }
 
+// func flavourType(character string, ttype *cookie) bool {
+// 	for(i := 0; i < len(ttype); i++){
+// 		if ttype[i][0] == character{
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
+//function for fetching all the chars from a found string
 func StackCookies(r []int) []string{
 	cookieStack := []string{}
 
 	for i := 0; i < r[1]; i++ {
 
-		//cookies in the cookieJar are listed as follows : indexerStart /
-		//																								 tracker			/
-		//																					indexerStart + tracker -1 /
-		//																								line 					/
 		cookieStack = append(cookieStack, GET("../testfiles/main.ar", r[0]+i, r[3], r[0]+i).cargo);
-				fmt.Println("adding : ", GET("../testfiles/main.ar", r[0]+i, r[3], r[0]+i).cargo, "to stack. stack is now" , cookieStack);
 	}
-	fmt.Println("SC output : " , cookieStack);
 	return cookieStack;
 }
+
+// func flavourCookie(token *token) *cookie {
+//
+// }
+
 
 //function to hang a type to concatenated or constant strings;
 // func validate(toValidate string) {
 //
 // }
 
-//function for concatinating cookies
+//this function is for the parser to request tokens from the lexer.
+// func eat(tokenList []string, TkIndex int) *token{
+//
+// }
+
+
+
+//function for making strings out of chars in the cookie stack
 func concatCookie(r []string) string {
 	f := "";
+
 	for i := 0; i < len(r); i++ {
-		f += r[i];
+
+		f += r[i][0];
+
 	}
-	// fmt.Println("outputted : ", f );
+
 	return f;
 }

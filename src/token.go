@@ -7,3 +7,8 @@ type token struct {
   colIndex int
   tokenType string
 }
+
+type cookie struct {
+  cargo string
+  t_type string
+}
