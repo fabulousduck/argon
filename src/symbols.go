@@ -37,25 +37,24 @@ func oneCharacterSymbols() []cookie{
 		{"&", "TOKEN_AND"},
 		{".", "TOKEN_DOT"},
 		{",", "TOKEN_COMMA"},
-		{";", "TOKEN_ENDOFSTATEMENT"},
+		{";", "TOKEN_END_OF_STATEMENT"},
 	}
 }
 	/*
 		List of two character long symbols
 	*/
-func twoCharacterSymbols() []string{
-	return []string{
-		"==",
-		"<=",
-		">=",
-		"<>",
-		"!=",
-		"++",
-		"**",
-		"--",
-		"+=",
-		"-=",
-		"||",
+func twoCharacterSymbols() []cookie{
+	return []cookie{
+		{"==", "TOKEN_IS_EQ"},
+		{"<=", "TOKEN_LFT_EQ"},
+		{">=", "TOKEN_RGT_EQ"},
+		{"!=", "TOKEN_ISNOT_EQ"},
+		{"++", "TOKEN_PLUS_PLUS"},
+		{"**", "TOKEN_STAR_STAR"},
+		{"--", "TOKEN_MIN_MIN"},
+		{"+=", "TOKEN_PLUS_EQ"},
+		{"-=", "TOKEN_MIN_EQ"},
+		{"||", "TOKEN_OR"},
 	}
 }
 
@@ -131,10 +130,10 @@ func WHITESPACE_CHARS() []string{
 	return []string{"\\n","\\t"}
 }
 
-func ONE_CHARACTER_SYMBOLS() []string{
+func ONE_CHARACTER_SYMBOLS() []cookie{
 	return oneCharacterSymbols()
 }
 
-func TWO_CHARACTER_SYMBOLS() []string{
+func TWO_CHARACTER_SYMBOLS() []cookie{
 	return twoCharacterSymbols()
 }

@@ -10,5 +10,5 @@ type token struct {
 
 type cookie struct {
   cargo string
-  t_type string
+  t_sort string
 }

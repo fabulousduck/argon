@@ -9,20 +9,18 @@ import (
 
 
 func main() {
-	currentLine  := 0
-	currentColl  := 0
-	sourceIndex  := 0
-	indexing     := false
-	indexerStart := 0
-	tracker      := 0
+	currentLine  			:= 0
+	currentColl  			:= 0
+	sourceIndex  			:= 0
+	indexing     			:= false
+	indexerStart 			:= 0
+	tracker      			:= 0
 	const_string_mode := false;
-	int_count_mode := false;
-	cookieJar    := []cookie{}
-	file, err    := ioutil.ReadFile("../testfiles/main.ar")
-	lexedToken   := &token{"0",0,0,0,"0"}
-	if err != nil {
-		panic(err)
-	}
+	int_count_mode    := false;
+	symb_count_mode   := false;
+	cookieJar         := []string{}
+	file, _           := ioutil.ReadFile("../testfiles/main.ar")
+	lexedToken        := &token{"0",0,0,0,"0"}
 
 	for i := 0; i < len(string(file)); i++ {
 
@@ -55,39 +53,70 @@ func main() {
 				//if it finds a litteral string token while already lexing a litteral string
 				if(lexedToken.tokenType == "STRING_CONSTANT"){
 
-					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
-					tracker = 0;
-					indexerStart = 0;
-					indexing = false;
+					cookieJar         = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
+					tracker           = 0;
+					indexerStart      = 0;
+					indexing          = false;
 					const_string_mode = false;
 
 				}
 
 	//if its tracking but not tracking a litteral string
-	}else if(indexing && !const_string_mode){
+		}else if(indexing && !const_string_mode){
 
-		cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
-		tracker = 0;
-		indexerStart = 0;
-		indexing = false;
+			cookieJar    = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
+			tracker      = 0;
+			indexerStart = 0;
+			indexing     = false;
 
-	}else if(lexedToken.tokenType == "INTERGER" && ){
+			}else if(lexedToken.tokenType == "INTERGER"  && !const_string_mode){
+				fmt.Println("found int")
+				if(!int_count_mode){
+					indexerStart = lexedToken.sourceIndex;
+				}
+				int_count_mode = true;
+				tracker++;
 
-	}
+			}else if(int_count_mode && lexedToken.tokenType != "INTERGER"){
+
+				cookieJar      = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
+				int_count_mode = false;
+				indexerStart   = 0;
+				tracker  		   = 0;
+
+		 }else if(!const_string_mode && lexedToken.tokenType == "SYMBOL"){
+			 fmt.Println("found symbol")
+			 if(!symb_count_mode){
+				 	indexerStart = lexedToken.sourceIndex;
+			 }
+			 symb_count_mode = true;
+			 tracker++
+		 }else if(!const_string_mode && symb_count_mode && lexedToken.tokenType != "SYMBOL"){
+
+			 cookieJar      = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
+			 symb_count_mode = false;
+			 indexerStart    = 0;
+			 tracker  		   = 0;
+		 }
+
 
 		if char.cargo == "NEWLINE" {
 			currentLine += 1
 			currentColl = 0
 		}
-
 		sourceIndex += 1
 		currentColl += 1
 
-		}
-		//test. remove once we confirm it works
-		for i := 0; i < len(cookieJar); i++ {
-			fmt.Println(cookieJar[i])
-		}
+	}
+
+
+
+
+
+//test. remove once we confirm it works
+
+			fmt.Println(cookieJar)
+
 	}
 
 
@@ -106,7 +135,7 @@ func lex(char *char) *token {
 
 			return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"STRING_CONSTANT"}
 
-	}else if(isIn(char.cargo, ONE_CHARACTER_SYMBOLS())){
+	}else if(flavourType(char.cargo, ONE_CHARACTER_SYMBOLS())){
 
 			return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"SYMBOL"}
 
@@ -126,14 +155,15 @@ func isIn(character string, section []string) bool{
 	return false
 }
 
-// func flavourType(character string, ttype *cookie) bool {
-// 	for(i := 0; i < len(ttype); i++){
-// 		if ttype[i][0] == character{
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
+func flavourType(character string, ttype []cookie) bool {
+
+	for i := 0; i < len(ttype); i++{
+		if ttype[i].cargo == character{
+			return true
+		}
+	}
+	return false
+}
 
 //function for fetching all the chars from a found string
 func StackCookies(r []int) []string{
@@ -169,7 +199,7 @@ func concatCookie(r []string) string {
 
 	for i := 0; i < len(r); i++ {
 
-		f += r[i][0];
+		f += r[i];
 
 	}
 
