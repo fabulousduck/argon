@@ -32,12 +32,10 @@ func main() {
 		//this handles reading out non-string constants
 
 
-		if lexedToken.tokenType == "STRING" || lexedToken.tokenType == "STRING_CONSTANT"{
+		if lexedToken.tokenType == "STRING" || lexedToken.tokenType == "STRING_CONSTANT" && !const_string_mode{
 
 			if(!indexing){
-
 				indexerStart = lexedToken.sourceIndex;
-
 			}
 
 			if(lexedToken.tokenType == "STRING_CONSTANT"){
@@ -49,7 +47,7 @@ func main() {
 			tracker++;
 
 		}else if(indexing && const_string_mode){
-			fmt.Println("indexing and const_string_mode are true")
+			tracker++
 				if(lexedToken.tokenType == "STRING_CONSTANT"){
 
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
