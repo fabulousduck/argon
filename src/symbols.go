@@ -17,6 +17,8 @@ func keyWords() []cookie{
 		{"return","TOKEN_RETURN"},
 		{"exit",  "TOKEN_EXIT"},
 		{"define","TOKEN_DEFINE"},
+		{"fn", "TOKEN_FUNCTION"},
+		{"memes","TOKEN_MEMES"},
 	}
 }
 	/*

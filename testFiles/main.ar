@@ -1,4 +1,4 @@
-a = 123 + 1;
-if(a <= 3){print(a)}
-print(a);
-print("hello world");
+a = 123 + 1 ;
+if ( a <= 3 ) { print ( a ) }
+print ( a ) ;
+print( "hello world" ) ;

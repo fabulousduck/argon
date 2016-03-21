@@ -84,13 +84,14 @@ func main() {
 				indexerStart   = 0;
 				tracker  		   = 0;
 
-		 }else if(!const_string_mode && lexedToken.tokenType == "SYMBOL"){
-			 fmt.Println("found symbol")
+		 }else if(!const_string_mode && lexedToken.tokenType == "SYMBOL" ){
+			//  fmt.Println("found symbol : ", lexedToken.cargo)
 			 if(!symb_count_mode){
 				 	indexerStart = lexedToken.sourceIndex;
 			 }
 			 symb_count_mode = true;
 			 tracker++
+
 		 }else if(!const_string_mode && symb_count_mode && lexedToken.tokenType != "SYMBOL"){
 
 			 cookieJar      = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
@@ -117,7 +118,7 @@ func main() {
 
 			fmt.Println(cookieJar)
 
-	}
+}
 
 
 func lex(char *char) *token {
@@ -136,7 +137,7 @@ func lex(char *char) *token {
 			return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"STRING_CONSTANT"}
 
 	}else if(flavourType(char.cargo, ONE_CHARACTER_SYMBOLS())){
-
+			fmt.Println("got : ", char.cargo);
 			return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"SYMBOL"}
 
 	}
