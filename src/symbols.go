@@ -40,6 +40,8 @@ func oneCharacterSymbols() []cookie{
 		{".", "TOKEN_DOT"},
 		{",", "TOKEN_COMMA"},
 		{";", "TOKEN_END_OF_STATEMENT"},
+		{"{", "TOKEN_LFT_CB"},
+		{"}", "TOKEN_RGT_CB"},
 	}
 }
 	/*

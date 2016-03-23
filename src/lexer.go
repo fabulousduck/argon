@@ -8,16 +8,29 @@ import (
 
 
 
+
 func main() {
 	currentLine  			:= 0
 	currentColl  			:= 0
 	sourceIndex  			:= 0
-	indexing     			:= false
-	indexerStart 			:= 0
-	tracker      			:= 0
-	const_string_mode := false;
-	int_count_mode    := false;
-	symb_count_mode   := false;
+
+	string_indexing 		:= false;
+	string_tracker       := 0;
+	string_index_start   := 0;
+
+	const_indexing			:= false;
+	const_tracker			:= 0;
+	const_index_start		:= 0;
+
+	int_indexing			:= false;
+	int_tracker 			:= 0;
+	int_index_start      := 0;
+
+	symb_indexing 			:= false;
+	symb_tracker 			:= 0;
+	symb_index_start		:= 0;
+
+
 	cookieJar         := []string{}
 	file, _           := ioutil.ReadFile("../testfiles/main.ar")
 	lexedToken        := &token{"0",0,0,0,"0"}
@@ -26,79 +39,126 @@ func main() {
 
 		char := GET("../testFiles/main.ar", currentColl, currentLine, sourceIndex);
 
-    lexedToken = lex(char);
+   	lexedToken = lex(char);
 
 
-		//this handles reading out non-string constants
+		fmt.Println(lexedToken.cargo)
 
-		// if its a string or litteral string token and its not tracking a litteral string
-		if lexedToken.tokenType == "STRING" || lexedToken.tokenType == "STRING_CONSTANT" && !const_string_mode{
-			//if its not tracking
-			if(!indexing){
-				indexerStart = lexedToken.sourceIndex;
-			}
-			// if its a litteral string token
-			if(lexedToken.tokenType == "STRING_CONSTANT"){
-				const_string_mode = true;
-				fmt.Println("found a \" ")
-			}
+	 	//paste old code back here if needid//
 
-			indexing = true;
-			tracker++;
-			//if tracking a litteral string
-		}else if(indexing && const_string_mode){
 
-			tracker++
+	 	//paste old code back here if needid//
 
-				//if it finds a litteral string token while already lexing a litteral string
-				if(lexedToken.tokenType == "STRING_CONSTANT"){
 
-					cookieJar         = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
-					tracker           = 0;
-					indexerStart      = 0;
-					indexing          = false;
-					const_string_mode = false;
+		switch lexedToken.tokenType {
+			case "STRING":
 
+
+
+				if !string_indexing && !const_indexing {
+					string_indexing = true;
+					string_index_start = lexedToken.sourceIndex;
+					// string_tracker++
+				}
+				if string_indexing {
+					string_tracker++
 				}
 
-	//if its tracking but not tracking a litteral string
-		}else if(indexing && !const_string_mode){
 
-			cookieJar    = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
-			tracker      = 0;
-			indexerStart = 0;
-			indexing     = false;
 
-			}else if(lexedToken.tokenType == "INTERGER"  && !const_string_mode){
-				fmt.Println("found int")
-				if(!int_count_mode){
-					indexerStart = lexedToken.sourceIndex;
+				if int_indexing{
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker-1,lexedToken.lineIndex})))
+					int_indexing = false;
+					int_tracker = 0;
+					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
 				}
-				int_count_mode = true;
-				tracker++;
 
-			}else if(int_count_mode && lexedToken.tokenType != "INTERGER"){
+				if symb_indexing {
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})))
+					symb_indexing = false;
+					symb_tracker = 0;
+					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+				}
 
-				cookieJar      = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
-				int_count_mode = false;
-				indexerStart   = 0;
-				tracker  		   = 0;
+			case "STRING_CONSTANT":
 
-		 }else if(!const_string_mode && lexedToken.tokenType == "SYMBOL" ){
-			//  fmt.Println("found symbol : ", lexedToken.cargo)
-			 if(!symb_count_mode){
-				 	indexerStart = lexedToken.sourceIndex;
-			 }
-			 symb_count_mode = true;
-			 tracker++
+				if const_indexing {
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})))
+					const_indexing = false;
+					const_tracker = 0;
+					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+				}
+				if !const_indexing {
+					const_indexing = true;
+					const_index_start = lexedToken.sourceIndex;
+				}
 
-		 }else if(!const_string_mode && symb_count_mode && lexedToken.tokenType != "SYMBOL"){
+			case "INTERGER":
 
-			 cookieJar      = append(cookieJar, concatCookie(StackCookies([]int{indexerStart,tracker,indexerStart+tracker-1,lexedToken.lineIndex})))
-			 symb_count_mode = false;
-			 indexerStart    = 0;
-			 tracker  		   = 0;
-		 }
+				if const_indexing {
+					const_tracker++
+				}
+
+				if !int_indexing && !const_indexing{
+					int_indexing = true;
+					int_index_start = lexedToken.sourceIndex;
+					// int_tracker++
+				}
+
+				if int_indexing && !const_indexing{
+					int_tracker++
+				}
+
+				if string_indexing && !const_indexing{
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})))
+					string_indexing = false;
+					string_tracker = 0;
+					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+				}
+				if symb_indexing && !const_indexing{
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})))
+					symb_indexing = false;
+					symb_tracker = 0;
+					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+				}
+
+
+			case "SYMBOL":
+
+				if const_indexing {
+					const_tracker++
+				}
+
+				if !symb_indexing {
+					symb_indexing = true;
+					symb_index_start = lexedToken.sourceIndex;
+					// symb_tracker++
+				}
+
+				if symb_indexing {
+					symb_tracker++
+				}
+
+
+
+				if int_indexing {
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})))
+					int_indexing = false;
+					int_tracker = 0;
+					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+				}
+				if string_indexing {
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})))
+					string_indexing = false;
+					string_tracker = 0;
+					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+				}
+
+
+
+		}
+
+
 
 
 		if char.cargo == "NEWLINE" {
@@ -137,7 +197,7 @@ func lex(char *char) *token {
 			return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"STRING_CONSTANT"}
 
 	}else if(flavourType(char.cargo, ONE_CHARACTER_SYMBOLS())){
-			fmt.Println("got : ", char.cargo);
+
 			return &token{char.cargo,char.sourceIndex,char.lineIndex,char.colIndex,"SYMBOL"}
 
 	}
@@ -165,6 +225,7 @@ func flavourType(character string, ttype []cookie) bool {
 	}
 	return false
 }
+
 
 //function for fetching all the chars from a found string
 func StackCookies(r []int) []string{
