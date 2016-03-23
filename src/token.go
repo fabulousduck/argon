@@ -2,9 +2,7 @@ package main
 
 type token struct {
   cargo string
-  sourceIndex int
-  lineIndex int
-  colIndex int
+  sourceIndex, lineIndex, colIndex int
   tokenType string
 }
 
