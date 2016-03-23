@@ -34,6 +34,7 @@ func main() {
 	cookieJar         := []string{}
 	file, _           := ioutil.ReadFile("../testfiles/main.ar")
 	lexedToken        := &token{"0",0,0,0,"0"}
+	eof 					:= false;
 
 	for i := 0; i < len(string(file)); i++ {
 
@@ -41,8 +42,11 @@ func main() {
 
    	lexedToken = lex(char);
 
+		if i == len(string(file))-2{
+			eof = true;
+		}
 
-		fmt.Println(lexedToken.cargo)
+
 
 	 	//paste old code back here if needid//
 
@@ -64,33 +68,45 @@ func main() {
 					string_tracker++
 				}
 
+				if eof {
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})))
+					string_indexing = false;
+					string_tracker = 0;
 
+				}
 
-				if int_indexing{
+				if int_indexing && !eof{
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker-1,lexedToken.lineIndex})))
 					int_indexing = false;
 					int_tracker = 0;
-					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+
 				}
 
-				if symb_indexing {
+				if symb_indexing && !eof{
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})))
 					symb_indexing = false;
 					symb_tracker = 0;
-					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+
 				}
+
+
 
 			case "STRING_CONSTANT":
 
-				if const_indexing {
+				if const_indexing && !eof{
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})))
 					const_indexing = false;
 					const_tracker = 0;
-					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
 				}
 				if !const_indexing {
 					const_indexing = true;
 					const_index_start = lexedToken.sourceIndex;
+				}
+
+				if eof{
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})))
+					const_indexing = false;
+					const_tracker = 0;
 				}
 
 			case "INTERGER":
@@ -109,17 +125,21 @@ func main() {
 					int_tracker++
 				}
 
-				if string_indexing && !const_indexing{
+				if string_indexing && !const_indexing && !eof{
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})))
 					string_indexing = false;
 					string_tracker = 0;
-					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
 				}
-				if symb_indexing && !const_indexing{
+				if symb_indexing && !const_indexing && !eof{
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})))
 					symb_indexing = false;
 					symb_tracker = 0;
-					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+				}
+
+				if eof {
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})))
+					int_indexing = false;
+					int_tracker = 0;
 				}
 
 
@@ -141,17 +161,21 @@ func main() {
 
 
 
-				if int_indexing {
+				if int_indexing && !eof{
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})))
 					int_indexing = false;
 					int_tracker = 0;
-					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
 				}
-				if string_indexing {
+				if string_indexing && !eof{
 					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})))
 					string_indexing = false;
 					string_tracker = 0;
-					fmt.Println("current char :", lexedToken.tokenType, "pushed : " , cookieJar[len(cookieJar)-1]);
+				}
+
+				if eof {
+					cookieJar = append(cookieJar, concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})))
+					symb_indexing = false;
+					symb_tracker = 0;
 				}
 
 
