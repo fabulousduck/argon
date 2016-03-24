@@ -10,9 +10,8 @@ The current version should only be used for testing perposes.
 
 ## dependencies
 
-```
-  Go
-```
+- Go
+- version 0.15
 
 ## near future todo's
 
