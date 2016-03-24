@@ -19,6 +19,18 @@ func keyWords() []cookie{
 		{"define","TOKEN_DEFINE"},
 		{"fn", "TOKEN_FUNCTION"},
 		{"memes","TOKEN_MEMES"},
+		{"int","TOKEN_INT"},
+		{"int32", "TOKEN_INT_32"},
+		{"int64", "TOKEN_INT_64"},
+		{"uint", "TOKEN_INT_U"},
+		{"uint32", "TOKEN_INT_U_32"},
+		{"uint64", "TOKEN_INT_U_64"},
+		{"string", "TOKEN_STRING"},
+		{"char", "TOKEN_CHAR"},
+		{"bool", "TOKEN_BOOL"},
+		{"double","TOKEN_DOUBLE"},
+		{"float","TOKEN_FLOAT"}
+
 	}
 }
 	/*
