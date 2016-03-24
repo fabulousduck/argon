@@ -3,7 +3,6 @@ package main
 import (
 	"io/ioutil"
 	"fmt"
-	// "argon/src/scanner"
 )
 
 
@@ -14,27 +13,27 @@ func main() {
 	currentColl  			:= 0
 	sourceIndex  			:= 0
 
-	string_indexing 		:= false;
+	string_indexing 		 := false;
 	string_tracker       := 0;
 	string_index_start   := 0;
 
 	const_indexing			:= false;
-	const_tracker			:= 0;
+	const_tracker				:= 0;
 	const_index_start		:= 0;
 
-	int_indexing			:= false;
-	int_tracker 			:= 0;
-	int_index_start      := 0;
+	int_indexing				:= false;
+	int_tracker 				:= 0;
+	int_index_start     := 0;
 
 	symb_indexing 			:= false;
-	symb_tracker 			:= 0;
+	symb_tracker 				:= 0;
 	symb_index_start		:= 0;
 
 
-	cookieJar         := []string{}
+	cookieJar         := []cookie{}
 	file, _           := ioutil.ReadFile("../testfiles/main.ar")
 	lexedToken        := &token{"0",0,0,0,"0"}
-	eof 					:= false;
+	eof 							:= false;
 
 	for i := 0; i < len(string(file)); i++ {
 
@@ -74,21 +73,21 @@ func main() {
 					const_tracker++
 				}
 				if eof {
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
 					string_indexing = false;
 					string_tracker = 0;
 
 				}
 
 				if int_indexing && !eof && !const_indexing{
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
 					int_indexing = false;
 					int_tracker = 0;
 
 				}
 
 				if symb_indexing && !eof && !const_indexing{
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
 					symb_indexing = false;
 					symb_tracker = 0;
 
@@ -100,7 +99,7 @@ func main() {
 				fmt.Println("got : ", lexedToken.cargo, " while in const_string mode")
 
 				if int_indexing && !eof && !const_indexing{
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
 					int_indexing = false;
 					int_tracker = 0;
 
@@ -108,7 +107,7 @@ func main() {
 
 				if symb_indexing && !eof && !const_indexing{
 
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
 					symb_indexing = false;
 					symb_tracker = 0;
 
@@ -117,7 +116,7 @@ func main() {
 
 				if const_indexing && !eof{
 					const_tracker++
-					cookieJar = append(cookieJar, {concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT"})
 					const_indexing = false;
 					const_tracker = 0;
 
@@ -129,7 +128,7 @@ func main() {
 				}
 
 				if eof{
-					cookieJar = append(cookieJar, {concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT"})
 					const_indexing = false;
 					const_tracker = 0;
 				}
@@ -153,18 +152,18 @@ func main() {
 				}
 
 				if string_indexing && !const_indexing && !eof{
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
 					string_indexing = false;
 					string_tracker = 0;
 				}
 				if symb_indexing && !const_indexing && !eof{
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
 					symb_indexing = false;
 					symb_tracker = 0;
 				}
 
 				if eof {
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
 					int_indexing = false;
 					int_tracker = 0;
 				}
@@ -189,18 +188,18 @@ func main() {
 
 
 				if int_indexing && !eof{
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
 					int_indexing = false;
 					int_tracker = 0;
 				}
 				if string_indexing && !eof{
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
 					string_indexing = false;
 					string_tracker = 0;
 				}
 
 				if eof {
-					cookieJar = append(cookieJar, &cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
 					symb_indexing = false;
 					symb_tracker = 0;
 				}
@@ -227,8 +226,8 @@ func main() {
 
 //test. remove once we confirm it works
 
-			fmt.Println(cookieJar)
-
+			// fmt.Println(cookieJar)
+			eat(cookieJar);
 }
 
 
@@ -267,9 +266,9 @@ func isIn(character string, section []string) bool{
 	return false
 }
 
-func seek(needle string, haystack []string) string {
-	for i := 0; i < len(section); i++ {
-		if haystack[i] == needle {
+func seek(needle string, haystack []cookie) string {
+	for i := 0; i < len(haystack); i++ {
+		if haystack[i].cargo == needle {
 			return haystack[i].t_sort;
 		}
 	}
@@ -301,29 +300,44 @@ func StackCookies(r []int) []string{
 
 
 //function to hang a type to concatenated or constant strings;
-func validate(toValidate *cookie) *cookie{
+func validate(toValidate cookie) (*cookie , []string) {
 
 	switch toValidate.t_sort {
 		case "STRING":
 			if(seek(toValidate.cargo, KEYWORDS()) != "NOT_FOUND"){
-				return &cookie{toValidate.cargo,seek(toValidate.cargo, KEYWORDS())}
+				// fmt.Println(toValidate.cargo, KEYWORDS(), " MEMEMEMEEMMEMEMEEs")
+				return &cookie{toValidate.cargo,seek(toValidate.cargo, KEYWORDS())}, []string{"empty"}
 			}else{
-				return &cookie{toValidate.cargo, "VARIABLE"}
+				return &cookie{toValidate.cargo, "VARIABLE"}, []string{"empty"}
 			}
 		case "STRING_CONSTANT":
-			return &cookie{toValidate, "STRING_CONSTANT"}
+			return &cookie{toValidate.cargo, "STRING_CONSTANT"}, []string{"empty"}
 		case "INTERGER":
-			return &cookie{toValidate.cargo, "INTERGER"}
+			return &cookie{toValidate.cargo, "INTERGER"}, []string{"empty"}
 		case "SYMBOL":
-
+			if(seek(toValidate.cargo, ONE_CHARACTER_SYMBOLS())  != "NOT_FOUND") {
+				return &cookie{toValidate.cargo, seek(toValidate.cargo, ONE_CHARACTER_SYMBOLS())}, []string{"empty"}
+			}else if(seek(toValidate.cargo, TWO_CHARACTER_SYMBOLS()) != "NOT_FOUND"){
+				return &cookie{toValidate.cargo,seek(toValidate.cargo, TWO_CHARACTER_SYMBOLS())}, []string{"empty"}
+			}else{
+				symbol_bucket := []string{}
+				for i := 0; i < len(toValidate.cargo); i++ {
+				symbol_bucket = append(symbol_bucket, string(toValidate.cargo[i]));
+			}
+			return &cookie{"empty","empty"}, symbol_bucket
+		}
 	}
+
+	return &cookie{"ERR","ERR"}, []string{"error"}
 }
 
 
 
 //this function is for the parser to request tokens from the lexer.
-func eat(tokenList []string, TkIndex int) *token{
-
+func eat(tokenList []cookie){
+	for i := 0; i < len(tokenList); i++ {
+		fmt.Println(validate(tokenList[i]));
+	}
 }
 
 

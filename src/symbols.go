@@ -120,7 +120,7 @@ func digits() []string{
 	}
 }
 
-func KEYWORDS() []string{
+func KEYWORDS() []cookie{
 	return keyWords()
 }
 
