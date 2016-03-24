@@ -6,6 +6,6 @@
 ## dependencies
 
 
-'''
+```
   Go
-'''
+```
