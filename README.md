@@ -11,7 +11,7 @@ The current version should only be used for testing perposes.
 ## dependencies
 
 - Go
-- version 0.15
+- version 1.6
 
 ## near future todo's
 
