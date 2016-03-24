@@ -120,7 +120,9 @@ func digits() []string{
 	}
 }
 
-
+func KEYWORDS() []string{
+	return keyWords()
+}
 
 func IDENTIFIER_STARTCHARS() []string{
 	return letters()
