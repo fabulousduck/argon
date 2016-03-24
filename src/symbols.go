@@ -29,7 +29,7 @@ func keyWords() []cookie{
 		{"char", "TOKEN_CHAR"},
 		{"bool", "TOKEN_BOOL"},
 		{"double","TOKEN_DOUBLE"},
-		{"float","TOKEN_FLOAT"}
+		{"float","TOKEN_FLOAT"},
 
 	}
 }
