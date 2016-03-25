@@ -227,7 +227,9 @@ func main() {
 //test. remove once we confirm it works
 
 			// fmt.Println(cookieJar)
-			eat(cookieJar);
+				fmt.Println(cookieJar)
+				// fmt.Println(cookieBox(cookieJar));
+
 }
 
 
@@ -300,44 +302,56 @@ func StackCookies(r []int) []string{
 
 
 //function to hang a type to concatenated or constant strings;
-func validate(toValidate cookie) (*cookie , []string) {
+func validate(toValidate cookie) (cookie , []string) {
 
 	switch toValidate.t_sort {
 		case "STRING":
 			if(seek(toValidate.cargo, KEYWORDS()) != "NOT_FOUND"){
 				// fmt.Println(toValidate.cargo, KEYWORDS(), " MEMEMEMEEMMEMEMEEs")
-				return &cookie{toValidate.cargo,seek(toValidate.cargo, KEYWORDS())}, []string{"empty"}
+				return cookie{toValidate.cargo,seek(toValidate.cargo, KEYWORDS())}, []string{"empty"}
 			}else{
-				return &cookie{toValidate.cargo, "VARIABLE"}, []string{"empty"}
+				return cookie{toValidate.cargo, "VARIABLE"}, []string{"empty"}
 			}
 		case "STRING_CONSTANT":
-			return &cookie{toValidate.cargo, "STRING_CONSTANT"}, []string{"empty"}
+			return cookie{toValidate.cargo, "STRING_CONSTANT"}, []string{"empty"}
 		case "INTERGER":
-			return &cookie{toValidate.cargo, "INTERGER"}, []string{"empty"}
+			return cookie{toValidate.cargo, "INTERGER"}, []string{"empty"}
 		case "SYMBOL":
 			if(seek(toValidate.cargo, ONE_CHARACTER_SYMBOLS())  != "NOT_FOUND") {
-				return &cookie{toValidate.cargo, seek(toValidate.cargo, ONE_CHARACTER_SYMBOLS())}, []string{"empty"}
+				return cookie{toValidate.cargo, seek(toValidate.cargo, ONE_CHARACTER_SYMBOLS())}, []string{"empty"}
 			}else if(seek(toValidate.cargo, TWO_CHARACTER_SYMBOLS()) != "NOT_FOUND"){
-				return &cookie{toValidate.cargo,seek(toValidate.cargo, TWO_CHARACTER_SYMBOLS())}, []string{"empty"}
+				return cookie{toValidate.cargo,seek(toValidate.cargo, TWO_CHARACTER_SYMBOLS())}, []string{"empty"}
 			}else{
 				symbol_bucket := []string{}
 				for i := 0; i < len(toValidate.cargo); i++ {
 				symbol_bucket = append(symbol_bucket, string(toValidate.cargo[i]));
 			}
-			return &cookie{"empty","empty"}, symbol_bucket
+			return cookie{"empty","empty"}, symbol_bucket;
 		}
 	}
 
-	return &cookie{"ERR","ERR"}, []string{"error"}
+	return cookie{"ERR","ERR"}, []string{"error"}
 }
 
 
 
-//this function is for the parser to request tokens from the lexer.
-func eat(tokenList []cookie){
-	for i := 0; i < len(tokenList); i++ {
-		fmt.Println(validate(tokenList[i]));
+
+	//this function is for the parser to request tokens from the lexer.
+func cookieBox(tokenList []cookie)  []cookie{
+	cookiePackage := []cookie{}
+	for i := 0; i < len(tokenList); i++{
+		currentToken, symbol_bucket := validate(tokenList[i])
+		fmt.Println(tokenList)
+		if  len(symbol_bucket) > 1 {
+			for j := 0; j < len(symbol_bucket); j++ {
+				ct, _ := validate(cookie{symbol_bucket[j],"SYMBOL"})
+				cookiePackage = append(cookiePackage, ct);
+				fmt.Println("appended : ", cookie{symbol_bucket[j],"SYMBOL"}, " to que")
+			}
+		}
+		cookiePackage = append(cookiePackage,currentToken);
 	}
+	return cookiePackage;
 }
 
 
