@@ -8,7 +8,7 @@ import (
 
 
 
-func main() {
+func lexicallyAnalize(f string) []cookie{
 	currentLine  			:= 0
 	currentColl  			:= 0
 	sourceIndex  			:= 0
@@ -31,13 +31,13 @@ func main() {
 
 
 	cookieJar         := []cookie{}
-	file, _           := ioutil.ReadFile("../testfiles/main.ar")
+	file, _           := ioutil.ReadFile(f)
 	lexedToken        := &token{"0",0,0,0,"0"}
 	eof 					:= false;
 
 	for i := 0; i < len(string(file)); i++ {
 
-		char := GET("../testFiles/main.ar", currentColl, currentLine, sourceIndex);
+		char := GET(f, currentColl, currentLine, sourceIndex);
 
    	lexedToken = lex(char);
 
@@ -229,11 +229,8 @@ func main() {
 
 
 
-//test. remove once we confirm it works
 
-			// fmt.Println(cookieJar)
-				// fmt.Println(cookieJar)
-				fmt.Println(cookieBox(cookieJar));
+				return cookieBox(cookieJar);
 
 }
 
