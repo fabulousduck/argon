@@ -33,7 +33,7 @@ func main() {
 	cookieJar         := []cookie{}
 	file, _           := ioutil.ReadFile("../testfiles/main.ar")
 	lexedToken        := &token{"0",0,0,0,"0"}
-	eof 							:= false;
+	eof 					:= false;
 
 	for i := 0; i < len(string(file)); i++ {
 
@@ -73,6 +73,8 @@ func main() {
 					const_tracker++
 				}
 				if eof {
+					string_tracker++
+
 					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
 					string_indexing = false;
 					string_tracker = 0;
@@ -128,6 +130,7 @@ func main() {
 				}
 
 				if eof{
+					const_tracker++
 					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT"})
 					const_indexing = false;
 					const_tracker = 0;
@@ -163,6 +166,7 @@ func main() {
 				}
 
 				if eof {
+					int_tracker++
 					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
 					int_indexing = false;
 					int_tracker = 0;
@@ -199,7 +203,8 @@ func main() {
 				}
 
 				if eof {
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
+					symb_tracker++
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+(symb_tracker+2),lexedToken.lineIndex})), "SYMBOL"})
 					symb_indexing = false;
 					symb_tracker = 0;
 				}
@@ -227,8 +232,8 @@ func main() {
 //test. remove once we confirm it works
 
 			// fmt.Println(cookieJar)
-				fmt.Println(cookieJar)
-				// fmt.Println(cookieBox(cookieJar));
+				// fmt.Println(cookieJar)
+				fmt.Println(cookieBox(cookieJar));
 
 }
 
@@ -341,8 +346,9 @@ func cookieBox(tokenList []cookie)  []cookie{
 	cookiePackage := []cookie{}
 	for i := 0; i < len(tokenList); i++{
 		currentToken, symbol_bucket := validate(tokenList[i])
-		fmt.Println(tokenList)
+		// fmt.Println(tokenList)
 		if  len(symbol_bucket) > 1 {
+			fmt.Println(symbol_bucket);
 			for j := 0; j < len(symbol_bucket); j++ {
 				ct, _ := validate(cookie{symbol_bucket[j],"SYMBOL"})
 				cookiePackage = append(cookiePackage, ct);
