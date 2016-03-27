@@ -30,5 +30,5 @@ The current version should only be used for testing perposes.
     ```
   
  **Linux/OSX**
-    For mac and linux users. we have the parse.sh file.
+    For mac and linux users. we have the build.sh file.
     Since this is also still quite buggy. it is reccomended that you use the same way windows user currently compile it
