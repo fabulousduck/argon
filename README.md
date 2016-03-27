@@ -16,10 +16,7 @@ The current version should only be used for testing perposes.
 ## near future todo's
 
 1. Lexer
-  * Make type assignment function
   * Make function for combining char and int for types like int32/64 and uint32/64
-  * Make eat function so the parser can get the tokens from the lexer
-  * Rename main function so the parser.go file can have it and call the lexer itself
 2. Parser
   * Everything :^)
 
