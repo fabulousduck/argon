@@ -1,4 +1,4 @@
-# argon, an attempt at building a parser
+# argon, an attempt at building a compiler
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/powered-by-jeffs-keyboard.svg)](http://forthebadge.com)
 
@@ -16,10 +16,7 @@ The current version should only be used for testing perposes.
 ## near future todo's
 
 1. Lexer
-  * Make type assignment function
   * Make function for combining char and int for types like int32/64 and uint32/64
-  * Make eat function so the parser can get the tokens from the lexer
-  * Rename main function so the parser.go file can have it and call the lexer itself
 2. Parser
   * Everything :^)
 
@@ -33,5 +30,5 @@ The current version should only be used for testing perposes.
     ```
   
  **Linux/OSX**
-    For mac and linux users. we have the parse.sh file.
+    For mac and linux users. we have the build.sh file.
     Since this is also still quite buggy. it is reccomended that you use the same way windows user currently compile it
