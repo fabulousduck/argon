@@ -75,21 +75,21 @@ func lexicallyAnalize(f string) []cookie{
 				if eof {
 					string_tracker++
 
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING", lexedToken.lineIndex})
 					string_indexing = false;
 					string_tracker = 0;
 
 				}
 
 				if int_indexing && !eof && !const_indexing{
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER", lexedToken.lineIndex})
 					int_indexing = false;
 					int_tracker = 0;
 
 				}
 
 				if symb_indexing && !eof && !const_indexing{
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL", lexedToken.lineIndex})
 					symb_indexing = false;
 					symb_tracker = 0;
 
@@ -101,7 +101,7 @@ func lexicallyAnalize(f string) []cookie{
 				fmt.Println("got : ", lexedToken.cargo, " while in const_string mode")
 
 				if int_indexing && !eof && !const_indexing{
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER", lexedToken.lineIndex})
 					int_indexing = false;
 					int_tracker = 0;
 
@@ -109,7 +109,7 @@ func lexicallyAnalize(f string) []cookie{
 
 				if symb_indexing && !eof && !const_indexing{
 
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL", lexedToken.lineIndex})
 					symb_indexing = false;
 					symb_tracker = 0;
 
@@ -118,7 +118,7 @@ func lexicallyAnalize(f string) []cookie{
 
 				if const_indexing && !eof{
 					const_tracker++
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT", lexedToken.lineIndex})
 					const_indexing = false;
 					const_tracker = 0;
 
@@ -131,7 +131,7 @@ func lexicallyAnalize(f string) []cookie{
 
 				if eof{
 					const_tracker++
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{const_index_start,const_tracker,const_index_start+const_tracker-1,lexedToken.lineIndex})), "STRING_CONSTANT", lexedToken.lineIndex})
 					const_indexing = false;
 					const_tracker = 0;
 				}
@@ -155,19 +155,19 @@ func lexicallyAnalize(f string) []cookie{
 				}
 
 				if string_indexing && !const_indexing && !eof{
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING", lexedToken.lineIndex})
 					string_indexing = false;
 					string_tracker = 0;
 				}
 				if symb_indexing && !const_indexing && !eof{
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+symb_tracker+1,lexedToken.lineIndex})), "SYMBOL", lexedToken.lineIndex})
 					symb_indexing = false;
 					symb_tracker = 0;
 				}
 
 				if eof {
 					int_tracker++
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER", lexedToken.lineIndex})
 					int_indexing = false;
 					int_tracker = 0;
 				}
@@ -192,19 +192,19 @@ func lexicallyAnalize(f string) []cookie{
 
 
 				if int_indexing && !eof{
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{int_index_start,int_tracker,int_index_start+int_tracker+1,lexedToken.lineIndex})), "INTERGER", lexedToken.lineIndex})
 					int_indexing = false;
 					int_tracker = 0;
 				}
 				if string_indexing && !eof{
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{string_index_start,string_tracker,string_index_start+string_tracker+1,lexedToken.lineIndex})), "STRING", lexedToken.lineIndex})
 					string_indexing = false;
 					string_tracker = 0;
 				}
 
 				if eof {
 					symb_tracker++
-					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+(symb_tracker+2),lexedToken.lineIndex})), "SYMBOL"})
+					cookieJar = append(cookieJar, cookie{concatCookie(StackCookies([]int{symb_index_start,symb_tracker,symb_index_start+(symb_tracker+2),lexedToken.lineIndex})), "SYMBOL", lexedToken.lineIndex})
 					symb_indexing = false;
 					symb_tracker = 0;
 				}
@@ -264,13 +264,13 @@ func lex(char *char) *token {
 func isIn(character string, section []string) bool{
   for i := 0; i < len(section); i++ {
     if section[i] == character{
-    return true
+    	return true
 		}
 	}
 	return false
 }
 
-func seek(needle string, haystack []cookie) string {
+func seek(needle string, haystack []defCookie) string {
 	for i := 0; i < len(haystack); i++ {
 		if haystack[i].cargo == needle {
 			return haystack[i].t_sort;
@@ -279,7 +279,7 @@ func seek(needle string, haystack []cookie) string {
 	return "NOT_FOUND";
 }
 
-func flavourType(character string, ttype []cookie) bool {
+func flavourType(character string, ttype []defCookie) bool {
 
 	for i := 0; i < len(ttype); i++{
 		if ttype[i].cargo == character{
@@ -304,35 +304,35 @@ func StackCookies(r []int) []string{
 
 
 //function to hang a type to concatenated or constant strings;
-func validate(toValidate cookie) (cookie , []string) {
+func validate(toValidate cookie) (cookie , []cookie) {
 
 	switch toValidate.t_sort {
 		case "STRING":
 			if(seek(toValidate.cargo, KEYWORDS()) != "NOT_FOUND"){
 				// fmt.Println(toValidate.cargo, KEYWORDS(), " MEMEMEMEEMMEMEMEEs")
-				return cookie{toValidate.cargo,seek(toValidate.cargo, KEYWORDS())}, []string{"empty"}
+				return cookie{toValidate.cargo,seek(toValidate.cargo, KEYWORDS()), toValidate.line_no}, []cookie{}
 			}else{
-				return cookie{toValidate.cargo, "VARIABLE"}, []string{"empty"}
+				return cookie{toValidate.cargo, "VARIABLE", toValidate.line_no}, []cookie{}
 			}
 		case "STRING_CONSTANT":
-			return cookie{toValidate.cargo, "STRING_CONSTANT"}, []string{"empty"}
+			return cookie{toValidate.cargo, "STRING_CONSTANT" , toValidate.line_no}, []cookie{}
 		case "INTERGER":
-			return cookie{toValidate.cargo, "INTERGER"}, []string{"empty"}
+			return cookie{toValidate.cargo, "INTERGER", toValidate.line_no}, []cookie{}
 		case "SYMBOL":
 			if(seek(toValidate.cargo, ONE_CHARACTER_SYMBOLS())  != "NOT_FOUND") {
-				return cookie{toValidate.cargo, seek(toValidate.cargo, ONE_CHARACTER_SYMBOLS())}, []string{"empty"}
+				return cookie{toValidate.cargo, seek(toValidate.cargo, ONE_CHARACTER_SYMBOLS()), toValidate.line_no}, []cookie{}
 			}else if(seek(toValidate.cargo, TWO_CHARACTER_SYMBOLS()) != "NOT_FOUND"){
-				return cookie{toValidate.cargo,seek(toValidate.cargo, TWO_CHARACTER_SYMBOLS())}, []string{"empty"}
+				return cookie{toValidate.cargo,seek(toValidate.cargo, TWO_CHARACTER_SYMBOLS()), toValidate.line_no}, []cookie{}
 			}else{
-				symbol_bucket := []string{}
+				symbol_bucket := []cookie{}
 				for i := 0; i < len(toValidate.cargo); i++ {
-				symbol_bucket = append(symbol_bucket, string(toValidate.cargo[i]));
+				symbol_bucket = append(symbol_bucket, cookie{string(toValidate.cargo[i]),"SYMBOL" ,toValidate.line_no});
 			}
-			return cookie{"empty","empty"}, symbol_bucket;
+			return cookie{"empty","empty", toValidate.line_no}, symbol_bucket;
 		}
 	}
 
-	return cookie{"ERR","ERR"}, []string{"error"}
+	return cookie{"ERR","ERR", toValidate.line_no}, []cookie{}
 }
 
 
@@ -347,9 +347,8 @@ func cookieBox(tokenList []cookie)  []cookie{
 		if  len(symbol_bucket) > 1 {
 			fmt.Println(symbol_bucket);
 			for j := 0; j < len(symbol_bucket); j++ {
-				ct, _ := validate(cookie{symbol_bucket[j],"SYMBOL"})
+				ct, _ := validate(cookie{symbol_bucket[j].cargo,"SYMBOL", symbol_bucket[j].line_no})
 				cookiePackage = append(cookiePackage, ct);
-				fmt.Println("appended : ", cookie{symbol_bucket[j],"SYMBOL"}, " to que")
 			}
 		}
 		cookiePackage = append(cookiePackage,currentToken);

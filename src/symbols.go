@@ -3,8 +3,8 @@ package main
 /*
 	List of keyword defenitions
 */
-func keyWords() []cookie{
-	return []cookie{
+func keyWords() []defCookie{
+	return []defCookie{
 		{"if",   "TOKEN_IF"},
 		{"then", "TOKEN_THEN"},
 		{"else", "TOKEN_ELSE"},
@@ -20,11 +20,7 @@ func keyWords() []cookie{
 		{"fn", "TOKEN_FUNCTION"},
 		{"memes","TOKEN_MEMES"},
 		{"int","TOKEN_INT"},
-		{"int32", "TOKEN_INT_32"},
-		{"int64", "TOKEN_INT_64"},
 		{"uint", "TOKEN_INT_U"},
-		{"uint32", "TOKEN_INT_U_32"},
-		{"uint64", "TOKEN_INT_U_64"},
 		{"string", "TOKEN_STRING"},
 		{"char", "TOKEN_CHAR"},
 		{"bool", "TOKEN_BOOL"},
@@ -36,8 +32,8 @@ func keyWords() []cookie{
 	/*
 		List of one character long symbols
 	*/
-func oneCharacterSymbols() []cookie{
-	return []cookie{
+func oneCharacterSymbols() []defCookie{
+	return []defCookie{
 		{"=", "TOKEN_EQUALS"},
 		{"(", "TOKEN_LFT_PAR"},
 		{")", "TOKEN_RGT_PAR"},
@@ -59,8 +55,8 @@ func oneCharacterSymbols() []cookie{
 	/*
 		List of two character long symbols
 	*/
-func twoCharacterSymbols() []cookie{
-	return []cookie{
+func twoCharacterSymbols() []defCookie{
+	return []defCookie{
 		{"==", "TOKEN_IS_EQ"},
 		{"<=", "TOKEN_LFT_EQ"},
 		{">=", "TOKEN_RGT_EQ"},
@@ -120,7 +116,7 @@ func digits() []string{
 	}
 }
 
-func KEYWORDS() []cookie{
+func KEYWORDS() []defCookie{
 	return keyWords()
 }
 
@@ -148,10 +144,10 @@ func WHITESPACE_CHARS() []string{
 	return []string{"\\n","\\t"}
 }
 
-func ONE_CHARACTER_SYMBOLS() []cookie{
+func ONE_CHARACTER_SYMBOLS() []defCookie{
 	return oneCharacterSymbols()
 }
 
-func TWO_CHARACTER_SYMBOLS() []cookie{
+func TWO_CHARACTER_SYMBOLS() []defCookie{
 	return twoCharacterSymbols()
 }

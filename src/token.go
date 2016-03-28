@@ -9,4 +9,10 @@ type token struct {
 type cookie struct {
   cargo string
   t_sort string
+  line_no int
+}
+
+type defCookie struct {
+  cargo string
+  t_sort string
 }
