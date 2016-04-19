@@ -3,36 +3,37 @@ package main
 /*
 	List of keyword defenitions
 */
-func keyWords() []defCookie{
+func keyWords() []defCookie {
 	return []defCookie{
-		{"if",   "TOKEN_IF"},
+		{"if", "TOKEN_IF"},
 		{"then", "TOKEN_THEN"},
 		{"else", "TOKEN_ELSE"},
-		{"while","TOKEN_WHILE"},
+		{"while", "TOKEN_WHILE"},
 		{"elif", "TOKEN_ELIF"},
-		{"endif","TOKEN_ENDIF"},
-		{"while","TOKEN_WHILE"},
-		{"for",  "TOKEN_FOR"},
-		{"print","TOKEN_PRINT"},
-		{"return","TOKEN_RETURN"},
-		{"exit",  "TOKEN_EXIT"},
-		{"define","TOKEN_DEFINE"},
+		{"endif", "TOKEN_ENDIF"},
+		{"while", "TOKEN_WHILE"},
+		{"for", "TOKEN_FOR"},
+		{"print", "TOKEN_PRINT"},
+		{"return", "TOKEN_RETURN"},
+		{"exit", "TOKEN_EXIT"},
+		{"define", "TOKEN_DEFINE"},
 		{"fn", "TOKEN_FUNCTION"},
-		{"memes","TOKEN_MEMES"},
-		{"int","TOKEN_INT"},
+		{"memes", "TOKEN_MEMES"},
+		{"int", "TOKEN_INT"},
 		{"uint", "TOKEN_INT_U"},
 		{"string", "TOKEN_STRING"},
 		{"char", "TOKEN_CHAR"},
 		{"bool", "TOKEN_BOOL"},
-		{"double","TOKEN_DOUBLE"},
-		{"float","TOKEN_FLOAT"},
-
+		{"double", "TOKEN_DOUBLE"},
+		{"float", "TOKEN_FLOAT"},
+		{"pingu", "TOKEN_PINGU"},
 	}
 }
-	/*
-		List of one character long symbols
-	*/
-func oneCharacterSymbols() []defCookie{
+
+/*
+	List of one character long symbols
+*/
+func oneCharacterSymbols() []defCookie {
 	return []defCookie{
 		{"=", "TOKEN_EQUALS"},
 		{"(", "TOKEN_LFT_PAR"},
@@ -52,10 +53,11 @@ func oneCharacterSymbols() []defCookie{
 		{"}", "TOKEN_RGT_CB"},
 	}
 }
-	/*
-		List of two character long symbols
-	*/
-func twoCharacterSymbols() []defCookie{
+
+/*
+	List of two character long symbols
+*/
+func twoCharacterSymbols() []defCookie {
 	return []defCookie{
 		{"==", "TOKEN_IS_EQ"},
 		{"<=", "TOKEN_LFT_EQ"},
@@ -70,7 +72,7 @@ func twoCharacterSymbols() []defCookie{
 	}
 }
 
-func letters() []string{
+func letters() []string {
 	return []string{
 		"a",
 		"b",
@@ -101,7 +103,7 @@ func letters() []string{
 	}
 }
 
-func digits() []string{
+func digits() []string {
 	return []string{
 		"0",
 		"1",
@@ -116,38 +118,38 @@ func digits() []string{
 	}
 }
 
-func KEYWORDS() []defCookie{
+func KEYWORDS() []defCookie {
 	return keyWords()
 }
 
-func IDENTIFIER_STARTCHARS() []string{
+func IDENTIFIER_STARTCHARS() []string {
 	return letters()
 }
 
-func IDENTIFIER_CHARS() []string{
+func IDENTIFIER_CHARS() []string {
 	return letters()
 }
 
-func NUMBER_STARTCHARS() []string{
-	return digits();
-}
-
-func NUMBER_CHARS() []string{
+func NUMBER_STARTCHARS() []string {
 	return digits()
 }
 
-func STRING_CHARACTERS() []string{
-	return []string{"''","\""}
+func NUMBER_CHARS() []string {
+	return digits()
 }
 
-func WHITESPACE_CHARS() []string{
-	return []string{"\\n","\\t"}
+func STRING_CHARACTERS() []string {
+	return []string{"''", "\""}
 }
 
-func ONE_CHARACTER_SYMBOLS() []defCookie{
+func WHITESPACE_CHARS() []string {
+	return []string{"\\n", "\\t"}
+}
+
+func ONE_CHARACTER_SYMBOLS() []defCookie {
 	return oneCharacterSymbols()
 }
 
-func TWO_CHARACTER_SYMBOLS() []defCookie{
+func TWO_CHARACTER_SYMBOLS() []defCookie {
 	return twoCharacterSymbols()
 }

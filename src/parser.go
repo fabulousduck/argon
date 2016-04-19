@@ -1,15 +1,15 @@
 package main
 
-import(
-  "fmt"
+import (
+	"fmt"
 )
 
-func main(){
-  //returns a tokenSet
-  //the tokens are stored in structs called cookies
-  tokenSet := lexicallyAnalize("../testfiles/main.ar");
+func main() {
+	//returns a tokenSet
+	//the tokens are stored in structs called cookies
+	tokenSet := lexicallyAnalize("../testfiles/main.ar")
 
-  fmt.Println(tokenSet)
+	fmt.Println(tokenSet)
 }
 
 // func checkStatment(token cookie){

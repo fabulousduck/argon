@@ -1,3 +1,7 @@
 if(1 < 2){
   print("hey")
 }
+
+if(pingu) do {
+    hello
+}
