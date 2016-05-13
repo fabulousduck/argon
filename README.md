@@ -1,10 +1,10 @@
-# argon,  what happens when an idiot tries something complex
+# Rocket,  An expression parser written in go
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/powered-by-jeffs-keyboard.svg)](http://forthebadge.com)
 
 ## usage
 
-Argon is still very much being built and is not ready for proper use yet.
+Rocket is still very much being built and is not ready for proper use yet.
 The current version should only be used for testing perposes.
 
 
@@ -18,7 +18,7 @@ The current version should only be used for testing perposes.
 1. Lexer
   * Make function for combining char and int for types like int32/64 and uint32/64
 2. Parser
-  * Everything :^)
+  * implement shunting-yard algorithm
 
 ## How to install.
  **Windows.**
