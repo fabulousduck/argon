@@ -1,4 +1,4 @@
-# argon, an attempt at building a compiler
+# argon,  what happens when an idiot tries something complex
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/powered-by-jeffs-keyboard.svg)](http://forthebadge.com)
 

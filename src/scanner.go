@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"io/ioutil"
-)
+import "fmt"
 
 type char struct {
 	cargo       string
@@ -12,20 +9,14 @@ type char struct {
 	colIndex    int
 }
 
-
 func GET(file string, coll int, line int, sourceIndex int) *char {
-	f, err := ioutil.ReadFile(file)
-	if err != nil {
-		fmt.Println("could not find file")
-	}
-
-	stringFile := string(f)
-	wantedChar := string(stringFile[sourceIndex])
+	fmt.Println(string(file));
+	wantedChar := string(file[sourceIndex])
 	if wantedChar == " " {
 		wantedChar = "SPACE"
 	}
 	if wantedChar == "\n" {
-		wantedChar = "NEWLINE"
+		wantedChar = ""
 	}
 
 	return &char{wantedChar, sourceIndex, line, coll}
