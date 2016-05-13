@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -23,37 +22,32 @@ func (p *Parser) parse(rl string) []cookie {
 	stack := []cookie{}  //symbols
 	output := []cookie{} //numbers
 	count := 0
-	fmt.Println("rl : ", rl)
+
 	for i := 0; i < len(p.tokens); i++ {
-		fmt.Println("................ token is : ", p.tokens[count])
+
 		switch {
 		case p.tokens[count].isNumber():
-			fmt.Println("----entered case : isNumber----")
+
 			output = append(output, p.tokens[count])
 			count++
 		case p.tokens[count].isOperator():
-			fmt.Println("----entered case : isOperator----")
-			fmt.Println(" length of stack : ", len(stack))
+
 			if len(stack) == 0 {
 				stack = append(stack, p.tokens[count])
 				count++
 				break
 			}
 			if len(stack) >= 1 {
-				fmt.Println("----entered : len(Stack >= 1)----")
+
 				o1 := p.tokens[count]
 				o2 := stack[len(stack)-1]
 
 				//move the top of the stack to the ouput
 				if o1.isHigherPrec(o2) {
-					fmt.Println("----entered : o1.isHigherPrec(o2)----")
-					fmt.Println("----stack before moval : ", stack, " ----")
 					output = append(output, stack[0])
-					fmt.Println("---- moveing stack item : ", stack[0], " in stack : ", stack, "----")
+
 					stack = append(stack[:0], stack[0+1:]...)
-					fmt.Println("----BEGIN | move top of stack to output | stack after  ----")
-					fmt.Println(stack)
-					fmt.Println("----END   | move top of stack to output | stack after  ----")
+
 				}
 
 			}
@@ -92,14 +86,14 @@ func (p *Parser) parse(rl string) []cookie {
 		}
 
 	}
-	fmt.Println("stack at the end : ", stack)
+
 	if len(stack) != 0 {
-		fmt.Println("stack was not 0. it was : ", len(stack))
+
 		for l, j := 0, len(stack)-1; l < j; l, j = l+1, j-1 {
 			stack[l], stack[j] = stack[j], stack[l]
 		}
 		for m := 0; m <= len(stack)-1; m++ {
-			fmt.Println("finally adding : ", stack[m], "to the output")
+
 			output = append(output, stack[m])
 		}
 	}
