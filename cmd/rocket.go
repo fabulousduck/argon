@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gopkg.in/readline.v1"
+	"github.com/fabulousduck/rocket"
 )
 
 func main() {
