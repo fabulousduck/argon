@@ -1,4 +1,4 @@
-package main
+package rocket
 
 type association int
 

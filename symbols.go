@@ -1,4 +1,4 @@
-package main
+package rocket
 
 /*
 	List of keyword defenitions

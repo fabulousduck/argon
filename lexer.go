@@ -1,8 +1,4 @@
-package main
-
-import (
-	"fmt"
-)
+package rocket
 
 func lexicallyAnalize(f string) []cookie {
 	currentLine := 0
@@ -28,7 +24,6 @@ func lexicallyAnalize(f string) []cookie {
 	cookieJar := []cookie{}
 	lexedToken := &token{"0", 0, 0, 0, "0"}
 	eof := false
-	fmt.Println(string(f))
 	for i := 0; i < len(f); i++ {
 		char := GET(string(f), currentColl, currentLine, sourceIndex)
 		lexedToken = lex(char)

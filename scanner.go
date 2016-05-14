@@ -1,6 +1,4 @@
-package main
-
-import "fmt"
+package rocket
 
 type char struct {
 	cargo       string
@@ -10,7 +8,6 @@ type char struct {
 }
 
 func GET(file string, coll int, line int, sourceIndex int) *char {
-	fmt.Println(string(file));
 	wantedChar := string(file[sourceIndex])
 	if wantedChar == " " {
 		wantedChar = "SPACE"

@@ -16,17 +16,14 @@ func repl() {
 		panic(err)
 	}
 	defer rl.Close()
-
+	r1 := 0
 	for {
 		gline, err := rl.Readline()
 		if err != nil {
 			panic(err)
 		}
-		r1 := p.Run(gline)
-		if err != nil {
-			panic(err)
-			continue
-		}
-		fmt.Println(r1, " memes")
+		r1 = p.Run(gline)
+		fmt.Println(r1)
 	}
+
 }

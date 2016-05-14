@@ -1,6 +1,7 @@
-package main
+package rocket
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -17,7 +18,7 @@ func NewPrsr() *Parser {
 	}
 }
 
-func (p *Parser) parse(rl string) []cookie {
+func (p *Parser) parse(rl string) int {
 	//shunting yard algorrithm
 	stack := []cookie{}  //symbols
 	output := []cookie{} //numbers
@@ -38,16 +39,17 @@ func (p *Parser) parse(rl string) []cookie {
 				break
 			}
 			if len(stack) >= 1 {
-
 				o1 := p.tokens[count]
 				o2 := stack[len(stack)-1]
 
 				//move the top of the stack to the ouput
 				if o1.isHigherPrec(o2) {
-					output = append(output, stack[0])
-
-					stack = append(stack[:0], stack[0+1:]...)
-
+					t := output[len(output)-1]
+					output = append(output[:len(output)-1], output[len(output):]...)
+					e := exec(t, stack[len(stack)-1].cargo, output[len(output)-1])
+					stack = append(stack[:len(stack)-1], stack[len(stack):]...)
+					output = append(output[:len(output)-1], output[len(output):]...)
+					output = append(output, e)
 				}
 
 			}
@@ -89,18 +91,63 @@ func (p *Parser) parse(rl string) []cookie {
 
 	if len(stack) != 0 {
 
-		for l, j := 0, len(stack)-1; l < j; l, j = l+1, j-1 {
-			stack[l], stack[j] = stack[j], stack[l]
-		}
-		for m := 0; m <= len(stack)-1; m++ {
+		ls := 0
+		for len(stack) != 0 {
+			t := output[len(output)-1]
+			output = append(output[:len(output)-1], output[len(output):]...)
+			ls = len(stack) - 1
+			e := exec(t, stack[ls].cargo, output[len(output)-1])
+			stack = append(stack[:len(stack)-1], stack[len(stack):]...)
+			output = append(output[:len(output)-1], output[len(output):]...)
+			output = append(output, e)
 
-			output = append(output, stack[m])
+			//also exec here
 		}
 	}
-	return output
+	r, _ := strconv.Atoi(output[0].cargo)
+	return r
 }
 
-func (p *Parser) Run(ln string) []cookie {
+func eval(stack []cookie) int {
+	evalStack := []cookie{}
+	retval := cookie{}
+	i := 0
+	for len(evalStack) < 1 {
+		if stack[i].isNumber() {
+			evalStack = append(evalStack, stack[i])
+			i++
+		} else if stack[i].isOperator() {
+			temp := evalStack[len(evalStack)-1]
+			evalStack = append(evalStack[:len(evalStack)-1], stack[len(evalStack):]...)
+			retval = exec(stack[len(stack)-1], stack[i].cargo, temp)
+			evalStack = append(evalStack[:len(evalStack)-1], stack[len(evalStack):]...)
+			evalStack = append(evalStack, retval)
+			i = 0
+		}
+	}
+	fin, _ := strconv.Atoi(stack[0].cargo)
+	return fin
+}
+
+func exec(right cookie, op string, left cookie) cookie {
+	rhs, _ := strconv.Atoi(right.cargo)
+	lhs, _ := strconv.Atoi(left.cargo)
+	switch op {
+	case "+":
+		return cookie{strconv.Itoa(lhs + rhs), "INTERGER", 0}
+	case "-":
+		return cookie{strconv.Itoa(lhs - rhs), "INTERGER", 0}
+	case "*":
+		return cookie{strconv.Itoa(lhs * rhs), "INTERGER", 0}
+	case "/":
+		return cookie{strconv.Itoa(lhs / rhs), "INTERGER", 0}
+
+	}
+
+	return cookie{"0", "0", 0}
+}
+
+func (p *Parser) Run(ln string) int {
 	tokens := lexicallyAnalize(ln)
 
 	p.flush()
