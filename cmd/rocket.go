@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github/fabulousduck/rocket"
 	"gopkg.in/readline.v1"
 )
 
@@ -10,7 +11,7 @@ func main() {
 }
 
 func repl() {
-	p := NewPrsr()
+	p := rocket.NewPrsr()
 	rl, err := readline.New("rocket> ")
 	if err != nil {
 		panic(err)
