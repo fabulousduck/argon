@@ -22,14 +22,7 @@ The current version should only be used for testing perposes.
   * variable assignment
 
 ## How to install.
- **Windows.**
-    Currently there is no command/.bat for compiling on windows.
-    This is high on our priority list tho.
-    For now you will have to compile allthe files manually buy going into the src folder and executing the following:
-    ```
-      go run lexer.go scanner.go symbols.go token.go
-    ```
-  
- **Linux/OSX**
-    For mac and linux users. we have the build.sh file.
-    Since this is also still quite buggy. it is reccomended that you use the same way windows user currently compile it
+
+   use the go get command :
+   ` go get github.com/fabulousduck/rocket `
+   
