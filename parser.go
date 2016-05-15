@@ -108,27 +108,6 @@ func (p *Parser) parse(rl string) int {
 	return r
 }
 
-func eval(stack []cookie) int {
-	evalStack := []cookie{}
-	retval := cookie{}
-	i := 0
-	for len(evalStack) < 1 {
-		if stack[i].isNumber() {
-			evalStack = append(evalStack, stack[i])
-			i++
-		} else if stack[i].isOperator() {
-			temp := evalStack[len(evalStack)-1]
-			evalStack = append(evalStack[:len(evalStack)-1], stack[len(evalStack):]...)
-			retval = exec(stack[len(stack)-1], stack[i].cargo, temp)
-			evalStack = append(evalStack[:len(evalStack)-1], stack[len(evalStack):]...)
-			evalStack = append(evalStack, retval)
-			i = 0
-		}
-	}
-	fin, _ := strconv.Atoi(stack[0].cargo)
-	return fin
-}
-
 func exec(right cookie, op string, left cookie) cookie {
 	rhs, _ := strconv.Atoi(right.cargo)
 	lhs, _ := strconv.Atoi(left.cargo)
