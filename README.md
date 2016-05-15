@@ -4,10 +4,21 @@
 
 ## usage
 
-Rocket is still very much being built and is not ready for proper use yet.
-The current version should only be used for testing perposes.
+Rocket currently only has a readline ability.
+To use it goto the rocket.go file in CMD and run it.
+Once `rocket> ` appears. you can enter euqasions. (check the operator list for whats currently availible).
 
 
+## availible operators
+
+ - [x] *
+ - [x] /
+ - [x] +
+ - [x] -
+ - [ ] ( )       (** currently under development **)
+ - [ ] variables (** currently under development **)
+ 
+ 
 ## dependencies
 
 - Go
