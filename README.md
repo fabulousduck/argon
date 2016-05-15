@@ -15,7 +15,7 @@ Once `rocket> ` appears. you can enter euqasions. (check the operator list for w
  - [x] /
  - [x] +
  - [x] -
- - [ ] ( )       (** currently under development **)
+ - [ ]     ( )   (** currently under development **)
  - [ ] variables (** currently under development **)
  
  
