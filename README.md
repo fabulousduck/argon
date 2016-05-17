@@ -9,6 +9,10 @@ To use it goto the rocket.go file in CMD and run it.
 Once `rocket> ` appears. you can enter euqasions. (check the operator list for whats currently availible).
 
 
+##status
+ 
+ currently on hold becasue i want to learn more about go before i go any further with this.
+
 ## availible operators
 
  - [x] *
