@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github/fabulousduck/rocket"
-	"gopkg.in/readline.v1"
 	"github.com/fabulousduck/rocket"
+	"gopkg.in/readline.v1"
 )
 
 func main() {
