@@ -1,4 +1,4 @@
-# Rocket,  An expression parser written in go
+# Rocket [![Build Status](https://travis-ci.org/fabulousduck/rocket.svg?branch=master)](https://travis-ci.org/fabulousduck/rocket)
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/powered-by-jeffs-keyboard.svg)](http://forthebadge.com)
 
