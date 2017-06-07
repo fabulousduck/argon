@@ -14,9 +14,10 @@ type cookie struct {
 	line_no int
 }
 
-type defCookie struct {
+type unit struct {
 	cargo  string
-	t_sort string
+	notation string
+	tokenType string
 }
 
 type Parser struct {

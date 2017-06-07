@@ -1,6 +1,7 @@
 package rocket
 
 import (
+	//"fmt"
 	"strconv"
 	"strings"
 )
@@ -14,13 +15,15 @@ var opers = map[string]ops{
 	"SLASH": {6, "LEFT"},
 }
 
-func NewPrsr() *Parser {
+func NewParser() *Parser {
 	return &Parser{
 		pos: 0,
 	}
 }
 
 func (p *Parser) parse(rl string) int {
+
+	//fmt.Println("p.tokens : ", p.tokens)
 	//shunting yard algorrithm
 	var (
 		stack  Stack
@@ -31,6 +34,11 @@ func (p *Parser) parse(rl string) int {
 	for i := 0; i < len(p.tokens); i++ {
 
 		switch {
+
+		case p.tokens[count].isEmpty():
+
+			break
+
 		case p.tokens[count].isNumber():
 
 			output = append(output, p.tokens[count])
@@ -67,25 +75,23 @@ func (p *Parser) parse(rl string) int {
 				stack = append(stack[:len(stack)-1], stack[len(stack)+1:]...)
 			}
 			count++
+
 		case p.tokens[count].isLPAREN():
+			//fmt.Println("found left paren")
 			stack = append(stack, p.tokens[count])
 			count++
+
 		case p.tokens[count].isRPAREN():
-			holder := []cookie{}
-			//loop this untill the top of the stack is a left parentheses
-			for stack[len(stack)-1].cargo != "(" {
-				//if it finds a left parentheses
-				if stack[len(stack)-1].isLPAREN() {
-					holder = append(holder, stack[len(stack)-1])
-					stack = append(stack[:len(stack)-1], stack[len(stack):]...)
-					//if the top of the stack is a function operator
-					if stack[len(stack)-1].isOperator() {
-						output = append(output, holder[0])
-						holder = append(holder[:0], holder[1:]...)
-					}
-				}
-				output = append(output, stack[len(stack)-1])
-				stack = append(stack[:len(stack)-1], stack[len(stack):]...)
+
+			for stack.Top().cargo != "(" {
+				fg := output.Top()
+				output.Pop()
+				f := exec(fg, stack.Top().cargo, output.Top())
+				stack.Pop()
+				output.Pop()
+				output = append(output, f)
+			}
+			if stack.Top().cargo == "(" {
 
 			}
 			count++
@@ -94,7 +100,7 @@ func (p *Parser) parse(rl string) int {
 	}
 
 	if len(stack) != 0 {
-
+		//fmt.Println("stack not empty, found  : ", stack)
 		ls := 0
 		for len(stack) != 0 {
 			t := output[len(output)-1]
@@ -136,9 +142,9 @@ func (s *Stack) PopTo(dest *Stack) {
 	*dest = append(*dest, hold)
 }
 
-func (s Stack) Top() cookie {
+func (s *Stack) Top() cookie {
 
-	return s[len(s)-1]
+	return (*s)[len(*s)-1]
 }
 
 func (s *Stack) Pop() {
@@ -148,6 +154,12 @@ func (s *Stack) Pop() {
 func (p *Parser) Run(ln string) int {
 	tokens := lexicallyAnalize(ln)
 
+	for i := 0; i < len(tokens); i++ {
+		if tokens[i].t_sort == "empty" {
+			tokens = append(tokens[:i], tokens[i+1:]...)
+		}
+	}
+
 	p.flush()
 	p.tokens = tokens
 
@@ -155,13 +167,11 @@ func (p *Parser) Run(ln string) int {
 }
 
 func (c *cookie) isRPAREN() bool {
-	cc := strings.Split(c.t_sort, "_")[1]
-	return cc == "RGT"
+	return c.cargo == ")"
 }
 
 func (c *cookie) isLPAREN() bool {
-	cc := strings.Split(c.t_sort, "_")[1]
-	return cc == "LFT"
+	return c.cargo == "("
 }
 
 func (c *cookie) isNumber() bool {
@@ -169,8 +179,10 @@ func (c *cookie) isNumber() bool {
 }
 
 func (c *cookie) isOperator() bool {
+	if c.t_sort == "empty" {
+		return false
+	}
 	tok := strings.Split(c.t_sort, "_")[1]
-
 	var ok bool
 	if _, ok := opers[tok]; ok {
 
@@ -181,6 +193,10 @@ func (c *cookie) isOperator() bool {
 
 func (c *cookie) isComma() bool {
 	return strings.Split(c.t_sort, "_")[1] == "COMMA"
+}
+
+func (c *cookie) isEmpty() bool {
+	return c.t_sort == "empty"
 }
 
 func (p *Parser) flush() {

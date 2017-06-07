@@ -7,26 +7,9 @@ import (
 )
 
 func main() {
-
-	repl()
-
-}
-
-func repl() {
-	p := rocket.NewPrsr()
-	rl, err := readline.New("rocket> ")
-	if err != nil {
-		panic(err)
-	}
-	defer rl.Close()
-	r1 := 0
-	for {
-		gline, err := rl.Readline()
-		if err != nil {
-			panic(err)
-		}
-		r1 = p.Run(gline)
-		fmt.Println(r1)
-	}
+	test := "1*2/3+4-5"
+	p := rocket.NewParser()
+	r1 = p.Run(gline)
+	fmt.Println(r1)
 
 }
