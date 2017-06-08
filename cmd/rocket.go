@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"github.com/fabulousduck/rocket"
-	"gopkg.in/readline.v1"
+	// "gopkg.in/readline.v1"
 )
 
 func main() {
-	test := "1*2/3+4-5"
+	test := "1*277/3+4-45"
 	p := rocket.NewParser()
-	r1 = p.Run(gline)
-	fmt.Println(r1)
+	result := p.Run(test)
+	fmt.Println(result)
 
 }
