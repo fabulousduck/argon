@@ -34,7 +34,7 @@ func lex (program Program) []Unit {
 				nextType := determineType(program.peek(currentIndex+1))
 				if nextType == "OPERATOR" {
 					newOperator := unit+nextUnit
-					definition := OneCharacterSymbols.getBaseUnit(newOperator)
+					definition := TwoCharacterSymbols.getBaseUnit(newOperator)
 					if  definition.cargo != "BASE_LOOKUP_ERR" {
 						unitList = append(unitList,definition)
 						currentIndex += 2

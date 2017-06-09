@@ -51,6 +51,8 @@ var TwoCharacterSymbols = UnitTable{
 	{"**", "STAR_STAR", "OPERATOR"},
 	{"--", "MIN_MIN", "OPERATOR"},
 	{"+=", "PLUS_EQUALS", "OPERATOR"},
+	{"*=", "STAR_EQUALS", "OPERATOR"},
+	{"/=", "DEVIDE_EQUALS", "OPERATOR"},
 	{"-=", "MIN_EQUALS", "OPERATOR"},
 	{"||", "OR", "OPERATOR"},
 	{"\\t", "TAB", "OPERATOR"},
