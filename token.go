@@ -1,31 +1,33 @@
 package rocket
 
-type association int
+/*
+	TYPES
+		UnitTable
+			A collection of units used for lookup
+			In a UnitTable usable units for the parser are defined
+		location
+			Block of data the unit contains about the
+			physical location of the unit in the prgram
+		
+*/
 
-type token struct {
-	cargo                            string
-	sourceIndex, lineIndex, colIndex int
-	tokenType                        string
-}
 
-type cookie struct {
-	cargo   string
-	t_sort  string
-	line_no int
-}
+type UnitTable []Unit
 
-type defCookie struct {
+
+type Unit struct {
 	cargo  string
-	t_sort string
+	notation string
+	tokenType string
 }
 
 type Parser struct {
-	tokens []cookie
+	tokens []Unit
 	pos    int
-	tok    cookie
+	tok    Unit
 }
 
-type ops struct {
-	prec  int
-	assoc string
+type operator struct {
+	precedance  int
+	association string
 }

@@ -7,7 +7,7 @@ type char struct {
 	colIndex    int
 }
 
-func GET(file string, coll int, line int, sourceIndex int) *char {
+func GetChar(file string, coll int, line int, sourceIndex int) *char {
 	wantedChar := string(file[sourceIndex])
 	if wantedChar == " " {
 		wantedChar = "SPACE"
