@@ -1,3 +1,5 @@
+//left of doing : figuring the fuck out what the fuck is wrong with the fucking current index being wrongly incremented
+
 package rocket
 
 import (
@@ -14,31 +16,45 @@ func lex (program Program) []Unit {
 	for currentIndex < len(program) {
 		unit := string(program[currentIndex])
 		unitType := determineType(unit)
-		
+		fmt.Println(unit, unitType, currentIndex)
 		switch unitType {
 			case "INTERGER":
-				nextType := program.peek(currentIndex+1)
+				nextType := determineType(program.peek(currentIndex+1))
 				if nextType == "INTERGER" {
 					completeUnit := program.peekLong(currentIndex, "INTERGER")
 					unitList = append(unitList, completeUnit)
-					currentIndex += len(completeUnit.cargo)				
+					currentIndex += len(completeUnit.cargo)			
 				} else {
 					unitList = append(unitList, Digits.getBaseUnit(unit))
 					currentIndex++
 				}
-			case "LETTER":
+			case "LETTER": //not needed for now
 			case "OPERATOR":
-			case "SYMBOL":
+				nextUnit := program.peek(currentIndex+1)
+				nextType := determineType(program.peek(currentIndex+1))
+				if nextType == "OPERATOR" {
+					newOperator := unit+nextUnit
+					definition := OneCharacterSymbols.getBaseUnit(newOperator)
+					if  definition.cargo != "BASE_LOOKUP_ERR" {
+						unitList = append(unitList,definition)
+						currentIndex += 2
+					} else {
+						unitList = append(unitList,OneCharacterSymbols.getBaseUnit(unit))
+						currentIndex ++
+					}
+				} else {
+					unitList = append(unitList,OneCharacterSymbols.getBaseUnit(unit))
+					currentIndex++
+				}
+			case "SYMBOL": //not needed for now
 		}
-		currentIndex++
 	}
 	fmt.Println(unitList)
 	return unitList
 }
 
 func (program Program) peek (index int) string {
-	unit := string(program[index])
-	return determineType(unit)
+	return string(program[index])
 }
 
 func (program Program) peekLong (startIndex int, unitType string) Unit {
@@ -90,7 +106,7 @@ func (unitTable UnitTable) getBaseUnit (currentUnit string) Unit {
             return tableUnit
         }
 	}
-	return Unit{cargo: "PEEKLONG_ERR", notation: "PEEKLONG_ERR", tokenType: "INTERGER"}
+	return Unit{cargo: "BASE_LOOKUP_ERR", notation: "BASE_LOOKUP_ERR", tokenType: "BASE_LOOKUP_ERR"}
 }
 
 func (unitTable UnitTable) getType (currentUnit string) string {
