@@ -1,5 +1,3 @@
-//left of doing : figuring the fuck out what the fuck is wrong with the fucking current index being wrongly incremented
-
 package rocket
 
 import (
