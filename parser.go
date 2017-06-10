@@ -36,19 +36,13 @@ func (p *Parser) parse() int {
 
 		switch currentUnit.tokenType {
 			case "INTERGER":
-				fmt.Println("interger case")
 				outputQue = append(outputQue, currentUnit)
 				break
 			case "OPERATOR":
-				fmt.Println("operator case")
 				if(len(operatorStack) >= 1) {
-					fmt.Println("there is an operator on the operator stack : ", operatorStack)
 					for len(operatorStack) != 0 {
-						if operatorStack.top().hasHigherPrecedance(currentUnit) == true {
-							fmt.Println("operator ", operatorStack.top(), "has higher prec than", currentUnit)
+						if operatorStack.top().hasHigherPrecedance(currentUnit) {
 							outputQue = append(outputQue, operatorStack.top())
-							fmt.Println("appended to opq : ", outputQue)
-							fmt.Println("popping from operator stack : ", operatorStack)
 							operatorStack.pop()
 						} else {
 							break
@@ -56,7 +50,6 @@ func (p *Parser) parse() int {
 						
 					}
 				}
-				fmt.Println("pushing ", currentUnit, "to the operator stack")
 				operatorStack = append(operatorStack, currentUnit)
 				break
 		}
@@ -65,8 +58,6 @@ func (p *Parser) parse() int {
 		outputQue = append(outputQue, operatorStack[len(operatorStack)-1])
 		operatorStack.pop()
 	}
-
-	fmt.Println("outstack ", outputQue)
 	return 0
 	//evaluate postix to outcome
 }
