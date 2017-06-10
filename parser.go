@@ -10,6 +10,8 @@ var precedanceTable = map[string]Operator{
 	"SLASH": {3, "LEFT"},
 	"PLUS": {2, "LEFT"},
 	"MIN": {2, "LEFT"},
+	"RIGHT_PARENTHESES": {110, "LEFT"},
+	"LEFT_PARENTHESES": {110, "LEFT"},
 }
 
 func NewParser() *Parser {
@@ -34,15 +36,16 @@ func (p *Parser) toPostFix() UnitTable {
 	//evaluate to postfix notation
 	for i := 0; i < len(p.units); i++ {
 		currentUnit := p.units[i]
-
+		fmt.Println("operatorStack : ", operatorStack)
+		fmt.Println("currently P   : ", currentUnit.cargo)
 		switch currentUnit.unitType {
 			case "INTERGER":
 				outputQue = append(outputQue, currentUnit)
 				break
 			case "OPERATOR":
-				if(len(operatorStack) >= 1) {
+				if len(operatorStack) >= 1 && operatorStack.parenIsNotTop() {
 					for len(operatorStack) != 0 {
-						if operatorStack.top().hasHigherPrecedance(currentUnit) {
+						if operatorStack.top().hasHigherPrecedance(currentUnit) &&  operatorStack.top().unitType != "SYMBOL"{
 							outputQue = append(outputQue, operatorStack.top())
 							operatorStack.pop()
 						} else {
@@ -53,14 +56,42 @@ func (p *Parser) toPostFix() UnitTable {
 				}
 				operatorStack = append(operatorStack, currentUnit)
 				break
+			case "SYMBOL": //find a way to refacor this
+				switch currentUnit.symbolType() {
+					case "LEFT_PARENTHESES":
+						operatorStack = append(operatorStack, currentUnit)
+						fmt.Println("LFT_PARENT OPSTACK : ", operatorStack)
+						break
+					case "RIGHT_PARENTHESES":
+						if(operatorStack.top().symbolType() != "LEFT_PARENTHESES") {
+							for operatorStack.top().symbolType() != "LEFT_PARENTHESES" {
+								outputQue = append(outputQue, operatorStack.top())
+								operatorStack.pop()
+							}
+						} else {
+							operatorStack.pop()
+							operatorStack.pop()
+							break
+						}
+				}
+				break
 		}
 	}
 	for len(operatorStack) != 0 {
 		outputQue = append(outputQue, operatorStack[len(operatorStack)-1])
 		operatorStack.pop()
 	}
-
+	fmt.Println("opq : ", outputQue)
 	return outputQue
+}
+
+func (stack UnitTable) parenIsNotTop() bool {
+	return stack[len(stack)-1].unitType != "SYMBOL"
+}
+
+func (unit Unit) symbolType() string {
+	v := OneCharacterSymbols.getBaseUnit(unit.cargo).notation
+	return v
 }
 
 func postFixToOutcome (postFix UnitTable) int {
