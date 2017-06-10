@@ -74,11 +74,29 @@ while there are tokens to be read:
 
 
 
+    if operator A's association is LEFT and operator B's precedence is higher
+    or equal to operator A's precedence
+
+    OR
+
+    if operator A's association is RIGHT and operator B's precedence is higher
+    than operator A's precedence
+
+        The precedence of operator A is higher
+
+        OTHERWISE its not
 
 
+POP
 
+    remove top of stack
 
-
+    					for operatorStack.top().hasHigherPrecedance(currentUnit) == true {
+						outputQue = append(outputQue, currentUnit)
+						fmt.Println("appended to opq : ", outputQue)
+						fmt.Println("popping from operator stack : ", operatorStack)
+						operatorStack.pop()
+					}
 
 
 

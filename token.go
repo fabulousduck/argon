@@ -22,12 +22,10 @@ type Unit struct {
 }
 
 type Parser struct {
-	tokens []Unit
-	pos    int
-	tok    Unit
+	units UnitTable
 }
 
-type operator struct {
-	precedance  int
+type Operator struct {
+	precedence  int
 	association string
 }
