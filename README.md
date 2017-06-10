@@ -20,7 +20,7 @@ Its for the better
  - [x] /
  - [x] +
  - [x] -
- - [ ] parentheses   (** currently under development **)
+ - [x] parentheses
  - [ ] variables     (** currently under development **)
  
  
@@ -34,7 +34,6 @@ Its for the better
 1. Lexer
   * Make function for combining char and int for types like int32/64 and uint32/64
 2. Parser
-  * usability of parentheses
   * variable assignment
 
 ## How to install.
