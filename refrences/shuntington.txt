@@ -44,7 +44,7 @@ while there are tokens to be read:
 
 
 
-        If the token is a left parenthesis (i.e. "("), then push it onto the stack.
+        If the token is a left parenthesis i.e. "(", then push it onto the stack.
 
 
         //for right parentheses handeling//
@@ -52,8 +52,8 @@ while there are tokens to be read:
 
         If the token is a right parenthesis (i.e. ")"):
 
-            Until the token at the top of the stack is a left parenthesis, pop operators
-            off the stack onto the output queue.
+            Until the token at the top of the operator stack is a left parenthesis, pop operators
+            off the operator stack onto the output queue.
 
             Pop the left parenthesis from the stack, but not onto the output queue.
             If the token at the top of the stack is a function token, pop it onto the

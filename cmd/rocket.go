@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	var test rocket.Program = "1*277/3+4-45"
+	var test rocket.Program = "1*277/(3+4-45)"
 	p := rocket.NewParser()
 	result := p.Run(test)
 	fmt.Println(result)

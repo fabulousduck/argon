@@ -44,7 +44,9 @@ func lex (program Program) []Unit {
 					unitList = append(unitList,OneCharacterSymbols.getBaseUnit(unit))
 					currentIndex++
 				}
-			case "SYMBOL": //not needed for now
+			case "SYMBOL":
+				unitList = append(unitList, OneCharacterSymbols.getBaseUnit(unit))
+				currentIndex++
 		}
 	}
 	fmt.Println(unitList)
