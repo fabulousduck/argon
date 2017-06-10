@@ -1,7 +1,6 @@
 package rocket
 
 import(
-	"fmt"
 	"strconv"
 )
 
@@ -57,7 +56,6 @@ func (p *Parser) toPostFix() UnitTable {
 				switch currentUnit.symbolType() {
 					case "LEFT_PARENTHESES":
 						operatorStack = append(operatorStack, currentUnit)
-						fmt.Println("LFT_PARENT OPSTACK : ", operatorStack)
 						break
 					case "RIGHT_PARENTHESES":
 						if(operatorStack.top().symbolType() != "LEFT_PARENTHESES") {
@@ -78,7 +76,6 @@ func (p *Parser) toPostFix() UnitTable {
 		outputQue = append(outputQue, operatorStack[len(operatorStack)-1])
 		operatorStack.pop()
 	}
-	fmt.Println("opq : ", outputQue)
 	return outputQue
 }
 
@@ -110,14 +107,12 @@ func postFixToOutcome (postFix UnitTable) int {
 				break
 		}
 	}
-	fmt.Println(stack)
 	result, _ :=strconv.Atoi(stack.top().cargo)
 	return result
 } 
 
 func (p *Parser) parse() int {
 	postFix := p.toPostFix()
-	fmt.Println(postFix)
 	return postFixToOutcome(postFix)
 	//evaluate postix to outcome
 }

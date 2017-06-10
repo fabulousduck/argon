@@ -1,8 +1,5 @@
 package rocket
 
-import (
-	"fmt"
-)
 
 type Program string
 
@@ -14,7 +11,6 @@ func lex (program Program) []Unit {
 	for currentIndex < len(program) {
 		unit := string(program[currentIndex])
 		unitType := determineType(unit)
-		fmt.Println(unit, unitType, currentIndex)
 		switch unitType {
 			case "INTERGER":
 				nextType := determineType(program.peek(currentIndex+1))
@@ -49,7 +45,6 @@ func lex (program Program) []Unit {
 				currentIndex++
 		}
 	}
-	fmt.Println(unitList)
 	return unitList
 }
 
