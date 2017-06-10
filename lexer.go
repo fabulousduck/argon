@@ -60,12 +60,12 @@ func (program Program) peekLong (startIndex int, unitType string) Unit {
 	accum := ""
 	for ;; {
 		if(currentIndex >= len(program)) {
-			return Unit{cargo: accum, notation: unitType, tokenType: unitType}
+			return Unit{cargo: accum, notation: unitType, unitType: unitType}
 			break
 		}
 		currentUnit := string(program[currentIndex])
 		if determineType(currentUnit) != unitType {
-			return Unit{cargo: accum, notation: unitType, tokenType: unitType}
+			return Unit{cargo: accum, notation: unitType, unitType: unitType}
 			break
 		} else {
 			accum += currentUnit
@@ -73,7 +73,7 @@ func (program Program) peekLong (startIndex int, unitType string) Unit {
 		}
 	}
 
-	return Unit{cargo: "PEEKLONG_ERR", notation: "PEEKLONG_ERR", tokenType: "INTERGER"}
+	return Unit{cargo: "PEEKLONG_ERR", notation: "PEEKLONG_ERR", unitType: "INTERGER"}
 }
 
 func determineType (unit string) string {
@@ -104,13 +104,13 @@ func (unitTable UnitTable) getBaseUnit (currentUnit string) Unit {
             return tableUnit
         }
 	}
-	return Unit{cargo: "BASE_LOOKUP_ERR", notation: "BASE_LOOKUP_ERR", tokenType: "BASE_LOOKUP_ERR"}
+	return Unit{cargo: "BASE_LOOKUP_ERR", notation: "BASE_LOOKUP_ERR", unitType: "BASE_LOOKUP_ERR"}
 }
 
 func (unitTable UnitTable) getType (currentUnit string) string {
 	for _, tableUnit := range unitTable {
 		if tableUnit.cargo == currentUnit {
-            return tableUnit.tokenType
+            return tableUnit.unitType
         }
 	}
 	return "UNKNOWN_TYPE"

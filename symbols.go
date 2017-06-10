@@ -23,6 +23,7 @@ var OneCharacterSymbols = UnitTable{
 	{")", "RIGHT_PARENTHESES", "SYMBOL"},
 	{"<", "LEFT", "OPERATOR"},
 	{">", "RIGHT", "OPERATOR"},
+	{"^", "POWER", "OPERATOR"},	
 	{"/", "SLASH", "OPERATOR"},
 	{"*", "STAR", "OPERATOR"},
 	{"+", "PLUS", "OPERATOR"},
@@ -91,14 +92,14 @@ var Letters = UnitTable{
 }
 
 var Digits = UnitTable{
-	{"0", "ZERO", "INTEGER"},
-	{"1", "ONE", "INTEGER"},
-	{"2", "TWO", "INTEGER"},
-	{"3", "THREE", "INTEGER"},
-	{"4", "FOUR", "INTEGER"},
-	{"5", "FIVE", "INTEGER"},
-	{"6", "SIX", "INTEGER"},
-	{"7", "SEVEN", "INTEGER"},
-	{"8", "EIGHT", "INTEGER"},
-	{"9", "NINE", "INTEGER"},
+	{"0", "ZERO", "INTERGER"},
+	{"1", "ONE", "INTERGER"},
+	{"2", "TWO", "INTERGER"},
+	{"3", "THREE", "INTERGER"},
+	{"4", "FOUR", "INTERGER"},
+	{"5", "FIVE", "INTERGER"},
+	{"6", "SIX", "INTERGER"},
+	{"7", "SEVEN", "INTERGER"},
+	{"8", "EIGHT", "INTERGER"},
+	{"9", "NINE", "INTERGER"},
 }

@@ -1,217 +1,131 @@
 package rocket
 
-// import (
-// 	//"fmt"
-// 	"strconv"
-// 	"strings"
-// )
+import(
+	"fmt"
+	"strconv"
+)
 
-// type Stack []cookie
-
-// var opers = map[string]ops{
-// 	"STAR":  {6, "LEFT"},
-// 	"PLUS":  {5, "LEFT"},
-// 	"MIN":   {5, "LEFT"},
-// 	"SLASH": {6, "LEFT"},
-// }
+var precedanceTable = map[string]Operator{
+	"STAR": {3, "LEFT"},
+	"SLASH": {3, "LEFT"},
+	"PLUS": {2, "LEFT"},
+	"MIN": {2, "LEFT"},
+}
 
 func NewParser() *Parser {
 	return &Parser{
-		pos: 0,
+		units: UnitTable{},
 	}
 }
 
-// func (p *Parser) parse(rl string) int {
-
-// 	//fmt.Println("p.tokens : ", p.tokens)
-// 	//shunting yard algorrithm
-// 	var (
-// 		stack  Stack
-// 		output Stack
-// 	) //numbers
-// 	count := 0
-
-// 	for i := 0; i < len(p.tokens); i++ {
-
-// 		switch {
-
-// 		case p.tokens[count].isEmpty():
-
-// 			break
-
-// 		case p.tokens[count].isNumber():
-
-// 			output = append(output, p.tokens[count])
-// 			count++
-// 		case p.tokens[count].isOperator():
-
-// 			if len(stack) == 0 {
-// 				stack = append(stack, p.tokens[count])
-// 				count++
-// 				break
-// 			}
-// 			if len(stack) >= 1 {
-// 				o1 := p.tokens[count]
-// 				o2 := stack.Top()
-
-// 				//move the top of the stack to the ouput
-// 				if o1.isHigherPrec(o2) {
-// 					t := output.Top()
-// 					output.Pop()
-// 					e := exec(t, stack.Top().cargo, output.Top())
-// 					stack.Pop()
-// 					output.Pop()
-// 					output = append(output, e)
-// 				}
-
-// 			}
-// 			stack = append(stack, p.tokens[count])
-
-// 			count++
-// 		case p.tokens[count].isComma():
-// 			//loop this untill the top of the stack is a comma
-// 			for {
-// 				output = append(output, stack[len(stack)-1])
-// 				stack = append(stack[:len(stack)-1], stack[len(stack)+1:]...)
-// 			}
-// 			count++
-
-// 		case p.tokens[count].isLPAREN():
-// 			//fmt.Println("found left paren")
-// 			stack = append(stack, p.tokens[count])
-// 			count++
-
-// 		case p.tokens[count].isRPAREN():
-
-// 			for stack.Top().cargo != "(" {
-// 				fg := output.Top()
-// 				output.Pop()
-// 				f := exec(fg, stack.Top().cargo, output.Top())
-// 				stack.Pop()
-// 				output.Pop()
-// 				output = append(output, f)
-// 			}
-// 			if stack.Top().cargo == "(" {
-
-// 			}
-// 			count++
-// 		}
-
-// 	}
-
-// 	if len(stack) != 0 {
-// 		//fmt.Println("stack not empty, found  : ", stack)
-// 		ls := 0
-// 		for len(stack) != 0 {
-// 			t := output[len(output)-1]
-// 			output.Pop()
-// 			ls = len(stack) - 1
-// 			e := exec(t, stack[ls].cargo, output[len(output)-1])
-// 			stack.Pop()
-// 			output.Pop()
-// 			output = append(output, e)
-
-// 			//also exec here
-// 		}
-// 	}
-// 	r, _ := strconv.Atoi(output[0].cargo)
-// 	return r
-// }
-
-// func exec(right cookie, op string, left cookie) cookie {
-// 	rhs, _ := strconv.Atoi(right.cargo)
-// 	lhs, _ := strconv.Atoi(left.cargo)
-// 	switch op {
-// 	case "+":
-// 		return cookie{strconv.Itoa(lhs + rhs), "INTERGER", 0}
-// 	case "-":
-// 		return cookie{strconv.Itoa(lhs - rhs), "INTERGER", 0}
-// 	case "*":
-// 		return cookie{strconv.Itoa(lhs * rhs), "INTERGER", 0}
-// 	case "/":
-// 		return cookie{strconv.Itoa(lhs / rhs), "INTERGER", 0}
-
-// 	}
-
-// 	return cookie{"0", "0", 0}
-// }
-
-// func (s *Stack) PopTo(dest *Stack) {
-// 	hold := (*s)[len(*s)-1]
-// 	*s = (*s)[:len(*s)-1]
-// 	*dest = append(*dest, hold)
-// }
-
-// func (s *Stack) Top() cookie {
-
-// 	return (*s)[len(*s)-1]
-// }
-
-// func (s *Stack) Pop() {
-// 	*s = (*s)[:len(*s)-1]
-// }
 
 func (p *Parser) Run(ln Program) int {
-	lex(ln)
-
-	// for i := 0; i < len(tokens); i++ {
-	// 	if tokens[i].t_sort == "empty" {
-	// 		tokens = append(tokens[:i], tokens[i+1:]...)
-	// 	}
+	units := lex(ln)
+	p.units = units;
+	p.parse()
 	return 0
+}
+
+
+func (p *Parser) toPostFix() UnitTable {
+	outputQue := UnitTable{}
+	operatorStack := UnitTable{}
+	
+	//evaluate to postfix notation
+	for i := 0; i < len(p.units); i++ {
+		currentUnit := p.units[i]
+
+		switch currentUnit.unitType {
+			case "INTERGER":
+				outputQue = append(outputQue, currentUnit)
+				break
+			case "OPERATOR":
+				if(len(operatorStack) >= 1) {
+					for len(operatorStack) != 0 {
+						if operatorStack.top().hasHigherPrecedance(currentUnit) {
+							outputQue = append(outputQue, operatorStack.top())
+							operatorStack.pop()
+						} else {
+							break
+						}
+						
+					}
+				}
+				operatorStack = append(operatorStack, currentUnit)
+				break
+		}
+	}
+	for len(operatorStack) != 0 {
+		outputQue = append(outputQue, operatorStack[len(operatorStack)-1])
+		operatorStack.pop()
 	}
 
-// 	p.flush()
-// 	p.tokens = tokens
+	return outputQue
+}
 
-// 	return p.parse(ln)
-// }
+func postFixToOutcome (postFix UnitTable) int {
+	stack := UnitTable{}
 
-// func (c *cookie) isRPAREN() bool {
-// 	return c.cargo == ")"
-// }
+	for i := 0; i < len(postFix); i++ {
+		currentUnit := postFix[i]
 
-// func (c *cookie) isLPAREN() bool {
-// 	return c.cargo == "("
-// }
+		switch currentUnit.unitType {
+			case "INTERGER":
+				stack = append(stack, currentUnit)
+				break
+			case "OPERATOR":
+				temp := stack.top()
+				stack.pop()
+				res := exec(temp, currentUnit, stack.top())
+				stack.pop()
+				stack = append(stack, res)
+				break
+		}
+	}
+	fmt.Println(stack)
+	result, _ :=strconv.Atoi(stack.top().cargo)
+	return result
+} 
 
-// func (c *cookie) isNumber() bool {
-// 	return c.t_sort == "INTERGER"
-// }
+func (p *Parser) parse() int {
+	postFix := p.toPostFix()
+	fmt.Println(postFix)
+	return postFixToOutcome(postFix)
+	//evaluate postix to outcome
+}
 
-// func (c *cookie) isOperator() bool {
-// 	if c.t_sort == "empty" {
-// 		return false
-// 	}
-// 	tok := strings.Split(c.t_sort, "_")[1]
-// 	var ok bool
-// 	if _, ok := opers[tok]; ok {
+func exec(right Unit, operator Unit, left Unit) Unit {
+	rhs, _ := strconv.Atoi(right.cargo)
+	lhs, _ := strconv.Atoi(left.cargo)
+	switch operator.cargo {
+	case "+":
+		return Unit{strconv.Itoa(lhs + rhs), "INTERGER", "INTERGER"}
+	case "-":
+		return Unit{strconv.Itoa(lhs - rhs), "INTERGER", "INTERGER"}
+	case "*":
+		return Unit{strconv.Itoa(lhs * rhs), "INTERGER", "INTERGER"}
+	case "/":
+		return Unit{strconv.Itoa(lhs / rhs), "INTERGER", "INTERGER"}
+	}
 
-// 		return ok
-// 	}
-// 	return ok
-// }
+	return Unit{"0", "0", "0"}
+}
 
-// func (c *cookie) isComma() bool {
-// 	return strings.Split(c.t_sort, "_")[1] == "COMMA"
-// }
+func (stack UnitTable) top() Unit {
+	if(len(stack) < 1) {
+		panic("top of empty stack")
+	}
+	return stack[len(stack)-1]
+}
 
-// func (c *cookie) isEmpty() bool {
-// 	return c.t_sort == "empty"
-// }
+func (s *UnitTable) pop() {
+	*s = (*s)[:len(*s)-1]
 
-// func (p *Parser) flush() {
-// 	p.pos = 0
-// 	p.tokens = nil
-// }
+}
 
-// func (o1 cookie) isHigherPrec(o2 cookie) bool {
-// 	o1o := strings.Split(o1.t_sort, "_")[1]
-// 	o2o := strings.Split(o2.t_sort, "_")[1]
+func (unitA Unit) hasHigherPrecedance(unitB Unit) bool {
+	operatorA := precedanceTable[unitA.notation]
+	operatorB := precedanceTable[unitB.notation]
 
-// 	if opers[o1o].assoc == "LEFT" && opers[o2o].prec >= opers[o1o].prec ||
-// 		opers[o1o].assoc == "RIGHT" && opers[o2o].prec > opers[o1o].prec {
-// 		return true
-// 	}
-// 	return false
-// }
+	return (operatorA.association == "LEFT" && operatorB.precedence <= operatorA.precedence)|| (operatorA.association == "RIGHT" && operatorB.precedence > operatorA.precedence)
+}

@@ -18,16 +18,14 @@ type UnitTable []Unit
 type Unit struct {
 	cargo  string
 	notation string
-	tokenType string
+	unitType string
 }
 
 type Parser struct {
-	tokens []Unit
-	pos    int
-	tok    Unit
+	units UnitTable
 }
 
-type operator struct {
-	precedance  int
+type Operator struct {
+	precedence  int
 	association string
 }
