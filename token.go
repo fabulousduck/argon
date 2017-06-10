@@ -18,7 +18,7 @@ type UnitTable []Unit
 type Unit struct {
 	cargo  string
 	notation string
-	tokenType string
+	unitType string
 }
 
 type Parser struct {

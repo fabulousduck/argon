@@ -37,7 +37,7 @@ while there are tokens to be read:
             pop o2 off the operator stack, onto the output queue;
         at the end of iteration push o1 onto the operator stack.
 
-
+1 277 * 3 / 4 + 45 -
 
          //for left parentheses handeling//
 
@@ -91,7 +91,7 @@ POP
 
     remove top of stack
 
-    					for operatorStack.top().hasHigherPrecedance(currentUnit) == true {
+    				for operatorStack.top().hasHigherPrecedance(currentUnit) == true {
 						outputQue = append(outputQue, currentUnit)
 						fmt.Println("appended to opq : ", outputQue)
 						fmt.Println("popping from operator stack : ", operatorStack)

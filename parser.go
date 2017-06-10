@@ -2,6 +2,7 @@ package rocket
 
 import(
 	"fmt"
+	"strconv"
 )
 
 var precedanceTable = map[string]Operator{
@@ -26,7 +27,7 @@ func (p *Parser) Run(ln Program) int {
 }
 
 
-func (p *Parser) parse() int {
+func (p *Parser) toPostFix() UnitTable {
 	outputQue := UnitTable{}
 	operatorStack := UnitTable{}
 	
@@ -34,7 +35,7 @@ func (p *Parser) parse() int {
 	for i := 0; i < len(p.units); i++ {
 		currentUnit := p.units[i]
 
-		switch currentUnit.tokenType {
+		switch currentUnit.unitType {
 			case "INTERGER":
 				outputQue = append(outputQue, currentUnit)
 				break
@@ -58,26 +59,57 @@ func (p *Parser) parse() int {
 		outputQue = append(outputQue, operatorStack[len(operatorStack)-1])
 		operatorStack.pop()
 	}
-	return 0
+
+	return outputQue
+}
+
+func postFixToOutcome (postFix UnitTable) int {
+	stack := UnitTable{}
+
+	for i := 0; i < len(postFix); i++ {
+		currentUnit := postFix[i]
+
+		switch currentUnit.unitType {
+			case "INTERGER":
+				stack = append(stack, currentUnit)
+				break
+			case "OPERATOR":
+				temp := stack.top()
+				stack.pop()
+				res := exec(temp, currentUnit, stack.top())
+				stack.pop()
+				stack = append(stack, res)
+				break
+		}
+	}
+	fmt.Println(stack)
+	result, _ :=strconv.Atoi(stack.top().cargo)
+	return result
+} 
+
+func (p *Parser) parse() int {
+	postFix := p.toPostFix()
+	fmt.Println(postFix)
+	return postFixToOutcome(postFix)
 	//evaluate postix to outcome
 }
 
-// func exec(right cookie, op string, left cookie) cookie {
-// 	rhs, _ := strconv.Atoi(right.cargo)
-// 	lhs, _ := strconv.Atoi(left.cargo)
-// 	switch op {
-// 	case "+":
-// 		return cookie{strconv.Itoa(lhs + rhs), "INTERGER", 0}
-// 	case "-":
-// 		return cookie{strconv.Itoa(lhs - rhs), "INTERGER", 0}
-// 	case "*":
-// 		return cookie{strconv.Itoa(lhs * rhs), "INTERGER", 0}
-// 	case "/":
-// 		return cookie{strconv.Itoa(lhs / rhs), "INTERGER", 0}
-// 	}
+func exec(right Unit, operator Unit, left Unit) Unit {
+	rhs, _ := strconv.Atoi(right.cargo)
+	lhs, _ := strconv.Atoi(left.cargo)
+	switch operator.cargo {
+	case "+":
+		return Unit{strconv.Itoa(lhs + rhs), "INTERGER", "INTERGER"}
+	case "-":
+		return Unit{strconv.Itoa(lhs - rhs), "INTERGER", "INTERGER"}
+	case "*":
+		return Unit{strconv.Itoa(lhs * rhs), "INTERGER", "INTERGER"}
+	case "/":
+		return Unit{strconv.Itoa(lhs / rhs), "INTERGER", "INTERGER"}
+	}
 
-// 	return unit{"0", "0", 0}
-// }
+	return Unit{"0", "0", "0"}
+}
 
 func (stack UnitTable) top() Unit {
 	if(len(stack) < 1) {
