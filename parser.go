@@ -24,8 +24,7 @@ func NewParser() *Parser {
 func (p *Parser) Run(ln Program) int {
 	units := lex(ln)
 	p.units = units;
-	p.parse()
-	return 0
+	return p.parse()
 }
 
 
@@ -36,8 +35,6 @@ func (p *Parser) toPostFix() UnitTable {
 	//evaluate to postfix notation
 	for i := 0; i < len(p.units); i++ {
 		currentUnit := p.units[i]
-		fmt.Println("operatorStack : ", operatorStack)
-		fmt.Println("currently P   : ", currentUnit.cargo)
 		switch currentUnit.unitType {
 			case "INTERGER":
 				outputQue = append(outputQue, currentUnit)
