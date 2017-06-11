@@ -16,7 +16,12 @@ var precedanceTable = map[string]Operator{
 func NewParser() *Parser {
 	return &Parser{
 		units: UnitTable{},
+		Variables: []vars
 	}
+}
+
+func (p *Parser) assignVariable() {
+	
 }
 
 
