@@ -23,6 +23,7 @@ func lex (program Program) []Unit {
 					currentIndex++
 				}
 			case "LETTER": //not needed for now
+				break;
 			case "OPERATOR":
 				nextUnit := program.peek(currentIndex+1)
 				nextType := determineType(program.peek(currentIndex+1))
