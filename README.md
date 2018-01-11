@@ -21,7 +21,6 @@ Its for the better
  - [x] +
  - [x] -
  - [x] parentheses
- - [ ] variables     (** currently under development **)
  
  
 ## dependencies
