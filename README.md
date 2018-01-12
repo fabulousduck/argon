@@ -6,7 +6,7 @@
 
 Rocket currently only has a readline ability.
 To use it goto the rocket.go file in CMD and run it.
-Once `rocket> ` appears. you can enter euqasions. (check the operator list for whats currently availible).
+Once `rocket> ` appears. you can enter equations. (check the operator list for whats currently availible).
 
 
 ## status
