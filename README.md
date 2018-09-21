@@ -2,19 +2,19 @@
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/powered-by-jeffs-keyboard.svg)](http://forthebadge.com)
 
-## usage
+## Usage
 
 Rocket currently only has a readline ability.
 To use it goto the rocket.go file in CMD and run it.
 Once `rocket> ` appears. you can enter equations. (check the operator list for whats currently availible).
 
 
-## status
+## Status
  
 refactoring everything 
 
 Its for the better
-## availible operators
+## Availible operators
 
  - [x] *
  - [x] /
@@ -23,12 +23,12 @@ Its for the better
  - [x] parentheses
  
  
-## dependencies
+## Dependencies
 
 - Go
 - version 1.6
 
-## near future todo's
+## Near future todo's
 
 1. Lexer
   * Make function for combining char and int for types like int32/64 and uint32/64
