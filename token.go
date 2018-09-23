@@ -11,9 +11,15 @@ package rocket
 		
 */
 
+type vars []variable
 
 type UnitTable []Unit
 
+
+type variable struct {
+	names string
+	value Unit
+}
 
 type Unit struct {
 	cargo  string
